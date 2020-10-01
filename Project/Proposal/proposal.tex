@@ -1,0 +1,86 @@
+\documentclass{beamer}
+\usetheme{Rochester}
+\usecolortheme{beetle}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[b]{esvect}
+\usepackage{tikz}
+
+%Information to be included in the title page:
+\title{Project Proposal}
+\subtitle{ECES 511}
+\author{Damien Prieur}
+\date{10/1/2020}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Electromechanical Magnetic-Ball Suspension}
+\begin{itemize}[$\bullet$]
+\item Make an object levitate by controlling the current
+\end{itemize}
+\begin{figure}
+\includegraphics[scale=.75]{"../images/Electromechanical Magnetic-Ball Suspension setup".png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mathematical Model}
+Variables
+\begin{itemize}
+\item $R$ - Resistance
+\item $L$ - Inductance
+\item $v$ - Voltage
+\item $m$ - Mass
+\item $K$ - Coefficient that relates force to the magnetic field
+\item $g$ - Gravity
+\item $i$ - Current
+\item $y$ - Distance of Mass M to electromagnet
+\end{itemize}
+$$
+\begin{aligned}
+    &\begin{aligned}
+        \mathllap{v(t)} &= Ri(t) + L\frac{di(t)}{dt}
+    \end{aligned} \\
+    &\begin{aligned}
+        \mathllap{m\frac{d^2y(t)}{dt^2}} &= mg - K\frac{i^2(t)}{y(t)}
+    \end{aligned} \\
+\end{aligned}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{I/O and State Variables}
+\begin{itemize}[$\bullet$]
+\item We control the current $i$
+\item Goal is to control distance $y$
+\end{itemize}
+$$
+\vv{x}=
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+i \\
+y \\
+\dot{y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\text{Current} \\
+\text{Distance}\\
+\text{Velocity}
+\end{bmatrix}
+$$
+
+\end{frame}
+
+\end{document}
