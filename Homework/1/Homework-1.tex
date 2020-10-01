@@ -1,0 +1,200 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+
+\author{Damien Prieur}
+\title{Homework 1 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+The impulse response of an ideal lowpass filter is given by
+$$ g(t) = 2\omega \frac{\sin(2\omega)(t-t_0)}{2\omega(t-t_0)} $$
+for all $t$, where $\omega$ and $t_0$ are constants. Is the ideal lowpass filter causal?
+Is it possible to build the filter in the real world?
+\newline
+\newline
+For the filter to be causal it must only depend on constants or things computable with $x \in (-\infty, t)$.
+We expect that prior to the impulse at $t_0$ there is no response so $g(t) = 0$ for $t < t_0$ since the impulse hasn't occured.
+\newline
+\newline
+Let $t = t_0 -1$
+$$
+g(t_0 - 1) = 2\omega \frac{\sin(2\omega)(t_0-1 - t_0)}{2\omega(t_0-1 - t_0)} = \sin(2\omega) \neq 0
+$$
+Therefore our filter is not causal and therefore not realizable.
+
+\section*{Problem 2}
+Consider a system whose input and output are related by
+$$y(t) =
+ \begin{cases}
+    \frac{u^2(t)}{u(t-1)} & u(t-1) \neq 0 \\
+    0                     & u(t-1) =  0
+\end{cases}
+$$
+for all $t$.
+Show that the system satisfies the homogeneity property, but not the additivity property.
+\newline
+Homogeneity:
+$$
+\begin{cases}
+    \frac{(\alpha u(t))^2}{\alpha u(t-1)} & u(t-1) \neq 0 \\
+    \alpha 0                              & u(t-1) =  0
+\end{cases}
+=
+\begin{cases}
+    \frac{\alpha u^2(t)}{u(t-1)} & u(t-1) \neq 0 \\
+    0                            & u(t-1) =  0
+\end{cases}
+=
+\alpha y(t)
+$$
+Additivity:
+$$
+\begin{cases}
+    \frac{(u_1(t)+u_2(t))^2}{u_0(t-1)+u_1(t-1)} & u_1(t-1) + u_2(t-1) \neq 0 \\
+    0                                           & otherwise
+\end{cases}
+=
+\begin{cases}
+    \frac{(u_1^2(t)+u_1(t)u_2(t) + u_2^2(t)}{u_0(t-1)+u_1(t-1)} & u_1(t-1) + u_2(t-1) \neq 0 \\
+    0                                           & otherwise
+\end{cases}
+$$
+$$
+\neq
+y_1(t) + y_2(t)
+=
+\begin{cases}
+    \frac{u_1^2(t)}{u_1(t-1)} + \frac{u_2^2(t)}{u_2(t-1)}  & u_1(t-1) \neq 0 \quad \& \quad u_2(t-1) \neq 0\\
+    0                                                      & \text{otherwise}
+\end{cases}
+$$
+
+\newpage
+
+\section*{Problem 3}
+Consider a system with impuse response as shown (left).
+What is the zero state response excited by the input $u(t)$ shown (right).
+\newline
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=.75, every node/.style={scale=.75},>=stealth]
+    \begin{axis}[
+        xmin=0 ,xmax=5,
+        ymin=-2,ymax=2,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=->,
+        xlabel={$t$},
+        ylabel={$g(t)$},
+        ]
+        \addplot[no marks,black,-] expression[domain=0:1,samples=2]{x};
+        \addplot[no marks,black,-] expression[domain=1:2,samples=2]{-x+2};
+        \addplot[no marks,black, dashed]coordinates {(1,0)(1,1)};
+    \end{axis}
+\end{tikzpicture}
+\hspace{2 cm}
+\begin{tikzpicture}[scale=.75, every node/.style={scale=.75},>=stealth]
+    \begin{axis}[
+        xmin=-1,xmax=4,
+        ymin=-2,ymax=2,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=->,
+        xlabel={$t$},
+        ylabel={$u(t)$},
+        ]
+        \addplot[no marks,black,-] expression[domain=0:1,samples=2]{1};
+        \addplot[no marks,black,-] expression[domain=1:2,samples=2]{-1};
+        \addplot[no marks,black,-]coordinates {(1,1)(1,-1)};
+        \addplot[no marks,black,-]coordinates {(2,-1)(2,0)};
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+We have
+$$
+y(t) = \int_{0}^{t} g(t-\tau)u(\tau) d\tau
+$$
+$$
+g(t)
+=
+\begin{cases}
+    t   & 0 \leq t \leq 1 \\
+    2-t & 1 \le  t \leq 2 \\
+    0   & otherwise
+\end{cases}
+\quad
+u(t)
+=
+\begin{cases}
+    1   & 0 \leq t \leq 1 \\
+    -1  & 1 \le  t \leq 2 \\
+    0   & otherwise
+\end{cases}
+$$
+Using linearity we can find $y(t)$ due to $u(t)$ for $t \in (0, 1]$ then for $t \in (1,2]$ and add the results together.
+\newline
+$y(t)$ Due to $u(t)$ for $t \in (0,1]$
+$$
+y_{(0,1]}(t)
+=
+\begin{cases}
+    \frac{t^2}{2}                   & 0 < t \leq 1 \\
+    -t^2 + 3t - \frac{3}{2}         & 1 < t \leq 2 \\
+    \frac{t^2}{2}-3t+\frac{9}{2}    & 2 < t \leq 3 \\
+    0                               & otherwise
+\end{cases}
+$$
+With linearity we can use $y(t) = y_{(0,1]}(t)-y_{(0,1]}(t-1)$
+$$
+y(t)
+=
+\begin{cases}
+    \frac{t^2}{2}                                                   & 0 < t \leq 1 \\
+    -t^2 + 3t - \frac{3}{2} - \frac{(t-1)^2}{2}                     & 1 < t \leq 2 \\
+    \frac{t^2}{2}-3t+\frac{9/2} - (-(t-1)^2+3(t-1) - \frac{3}{2})   & 2 < t \leq 3 \\
+    -(\frac{(t-1)^2}{2}-3(t-1)\frac{9}{2})                          & 3 < t \leq 4 \\
+    0                                                               & otherwise
+
+\end{cases}
+\quad
+=
+\begin{cases}
+    \frac{1}{2}t^2              & 0 < t \leq 1 \\
+    -\frac{3}{2}t^2 + 4t - 2    & 1 < t \leq 2 \\
+    \frac{3}{2}t^2 -8t + 10     & 2 < t \leq 3 \\
+    -\frac{1}{2}t^2 +4t - 8     & 3 < t \leq 4 \\
+    0                           & otherwise
+
+\end{cases}
+$$
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[>=stealth]
+    \begin{axis}[
+        xmin=-.6,xmax=4.5,
+        ymin=-2,ymax=2,
+        axis x line=middle,
+        axis y line=middle,
+        axis line style=->,
+        xlabel={$t$},
+        ylabel={$y(t)$},
+        ]
+        \addplot[no marks,black,-] expression[domain=0:1,samples=20]{x^2/2};
+        \addplot[no marks,black,-] expression[domain=1:2,samples=20]{-3*x^2/2+4*x-2};
+        \addplot[no marks,black,-] expression[domain=2:3,samples=20]{3*x^2/2-8*x+10};
+        \addplot[no marks,black,-] expression[domain=3:4,samples=20]{-x^2/2+4*x-8};
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+\end{document}
+
