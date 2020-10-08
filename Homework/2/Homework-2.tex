@@ -1,0 +1,558 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+
+\author{Damien Prieur}
+\title{Homework 2 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+Find the basis of the range spaces and null spaces of the matricies below.
+
+$$
+\mathbf{A}_1
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+\qquad
+\mathbf{A}_2
+=
+\begin{bmatrix}
+4 & 1 & -1 \\
+3 & 2 & 0 \\
+1 & 1 & 0 \\
+\end{bmatrix}
+\qquad
+\mathbf{A}_3
+=
+\begin{bmatrix}
+1 & 2 & 4 & 4 \\
+0 & -1& -2& 2 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+$$
+Basis($\mathbf{A}_1$) trivially independent:
+$$
+q_1
+=
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+\end{bmatrix}
+\qquad
+q_2
+=
+\begin{bmatrix}
+0 \\
+0 \\
+1 \\
+\end{bmatrix}
+$$
+Null space($\mathbf{A}_1$):
+$$
+\begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+a \\
+b \\
+c \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & b & 0 \\
+0 & 0 & 0 \\
+0 & 0 & c \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+a \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+With this we get
+$
+n_1
+=
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+\end{bmatrix}
+$
+as the basis of our null space so our null space($\mathbf{A}_1$) = span\{$n_1$\}.
+\newline
+Basis($\mathbf{A}_2$): If the determinant is nonzero then all columns are independent of each other since the null space only contains $0$.
+With this fact and the Dimension - rank = nullity, we know that the rank is 3 so we have 3 independent basis vectors.
+$$
+\det{\mathbf{A}_2}
+=
+\begin{vmatrix}
+4 & 1 & -1 \\
+3 & 2 & 0 \\
+1 & 1 & 0 \\
+\end{vmatrix}
+= -1
+\begin{vmatrix}
+3 & 2 \\
+1 & 1 \\
+\end{vmatrix}
+-0
+\begin{vmatrix}
+4 & 1 \\
+1 & 1 \\
+\end{vmatrix}
++0
+\begin{vmatrix}
+4 & 1 \\
+3 & 2 \\
+\end{vmatrix}
+=-1
+$$
+Therefore a set of basis vectors are:
+$$
+q_1 =
+\begin{bmatrix}
+4 \\
+3 \\
+1 \\
+\end{bmatrix}
+\qquad
+q_2 =
+\begin{bmatrix}
+1 \\
+2 \\
+1 \\
+\end{bmatrix}
+\qquad
+q_3 =
+\begin{bmatrix}
+-1\\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+Since our rank is $3$ and our dimension is also $3$ (full rank) then our null space must be empty (only contains the $0$ vector).
+\newline
+Basis($\mathbf{A}_3$): by inspection $2 \cdot q_2 = q_3$ and the rest are independent
+$$
+q_1 =
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+\end{bmatrix}
+\qquad
+q_2 =
+\begin{bmatrix}
+2 \\
+-1\\
+0 \\
+\end{bmatrix}
+\qquad
+q_3 =
+\begin{bmatrix}
+4 \\
+2 \\
+1 \\
+\end{bmatrix}
+$$
+Null space($\mathbf{A}_3$):
+$$
+\begin{bmatrix}
+1 & 2 & 4 & 4 \\
+0 & -1& -2& 2 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+a & 2b& 4c& 4d\\
+0 & -b&-2c& 2d\\
+0 & 0 & 0 & 1d\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+0 \\
+b \\
+-\frac{b}{2} \\
+0 \\
+\end{bmatrix}
+$$
+With this we get $n_1 = \begin{bmatrix} 0 \\ 1 \\ -\frac{1}{2} \\ 0\end{bmatrix}$ as the basis of our null space so the null space($\mathbf{A}_3$) = span\{$n_1$\}.
+
+
+\section*{Problem 2}
+Let
+$\mathbf{v_1}
+=
+\begin{bmatrix}
+1  \\
+2  \\
+1  \\
+-2 \\
+3  \\
+\end{bmatrix}
+$
+,
+$\mathbf{v_2}
+=
+\begin{bmatrix}
+2  \\
+5  \\
+-1 \\
+3  \\
+-2 \\
+\end{bmatrix}
+$
+,
+$\mathbf{v_3}
+=
+\begin{bmatrix}
+1  \\
+3  \\
+-2 \\
+5  \\
+-5 \\
+\end{bmatrix}
+$
+,
+$\mathbf{v_4}
+=
+\begin{bmatrix}
+3  \\
+1  \\
+2  \\
+-4 \\
+1  \\
+\end{bmatrix}
+$
+,
+$\mathbf{v_5}
+=
+\begin{bmatrix}
+5  \\
+6  \\
+1  \\
+-1 \\
+-1 \\
+\end{bmatrix}
+$
+\newline
+Let $\mathbf{W}: \{ \mathbf{w}\in \mathbb{R}^5 \quad | \quad \mathbf{w} = a_1\mathbf{v_1} + a_2\mathbf{v_2} + a_3\mathbf{v_3} + a_4\mathbf{v_4} + a_5\mathbf{v_5} \}$
+\newline
+\begin{enumerate}[1.]
+\item Find basis $\mathbf{Q}$ of $\mathbf{W}$
+\newline
+By inspection we can see that $q_1 + q_3 = q_2$ and $q_1 + q_3 + q_4 = q_5 $ the rest are linearly independent.
+So we keep remove 2 of the linearly dependent, I'm choosing $q_2, q_5$ and keeping $q_1,q_3,q_4$
+$$
+\mathbf{Q}
+=
+\begin{bmatrix}
+1  & 1  & 3  \\
+2  & 3  & 1  \\
+1  & -2 & 2  \\
+-2 & 5  & -4 \\
+3  & -5 & 1  \\
+\end{bmatrix}
+$$
+\item What is the dimension of $\mathbf{W}$
+\newline
+$dim(\mathbf{W}) = 3$
+\item What is the representation of vector $\mathbf{x} = \begin{bmatrix}-5 \\ 6 \\ -5 \\ 11 \\ -1 \end{bmatrix}$ with respect to the basis $\mathbf{Q}$
+\newline
+We can find the coefficients by gauss jordan reduction
+$$
+\begin{bmatrix}
+1  & 1  & 3  \\
+2  & 3  & 1  \\
+1  & -2 & 2  \\
+-2 & 5  & -4 \\
+3  & -5 & 1  \\
+\end{bmatrix}
+\begin{bmatrix}
+a_1 \\
+a_2 \\
+a_3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+-5 \\
+6  \\
+-5 \\
+11 \\
+-1
+\end{bmatrix}
+\Leftrightarrow
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+2  & 3  & 1  & 6  \\
+1  & -2 & 2  & -5 \\
+-2 & 5  & -4 & 11 \\
+3  & -5 & 1  & -1 \\
+\end{bmatrix}
+$$
+$$
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+2  & 3  & 1  & 6  \\
+1  & -2 & 2  & -5 \\
+-2 & 5  & -4 & 11 \\
+3  & -5 & 1  & -1 \\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+0  & 1  & -5 & 16 \\
+0  & -3 & -1 & 0  \\
+0  & 7  & 2  & 1  \\
+0  & -8 & -8 & 14 \\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+0  & 1  & -5 & 16 \\
+0  & 0  &-48 & 142\\
+0  & 0  & 37 &-111\\
+0  & 0  & -16& 48 \\
+\end{bmatrix}
+$$
+$$
+\implies
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+0  & 1  & -5 & 16 \\
+0  & 0  &-48 & 142\\
+0  & 0  & 0  &-\frac{37}{24}\\
+0  & 0  & 0  &\frac{2}{3}\\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+1  & 1  & 3  & -5 \\
+0  & 1  & -5 & 16 \\
+0  & 0  &-48 & 142\\
+0  & 0  & 0  &-\frac{37}{24}\\
+0  & 0  & 0  & 0\\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+1  & 0  & 0  & 0 \\
+0  & 1  & 0  & 0 \\
+0  & 0  & 1  & 0 \\
+0  & 0  & 0  & 1 \\
+0  & 0  & 0  & 0 \\
+\end{bmatrix}
+$$
+Since the last column is dependent on itself there is no soultion for $\mathbf{x}$ with respect to the basis $\mathbf{Q}$.
+\item Orthogonalize $\mathbf{Q}$ using Gram-Schmidt orthogonalization
+\newline
+$\mathbf{u}_1 = \mathbf{v}_1 = \begin{bmatrix} 1 \\ 2 \\ 1 \\ -2 \\ 3 \\ \end{bmatrix}$
+\newline
+$
+\mathbf{u}_2 = \mathbf{v}_3 - \frac{\mathbf{u}_1^T\mathbf{v}_3}{\sqrt{\mathbf{u}_1\mathbf{u}_1}}\mathbf{u}_1
+=
+\begin{bmatrix} 1 \\ 3 \\ -2 \\ 5 \\ -5 \\ \end{bmatrix}
+-\frac{1+6-2-10-15}{\sqrt{1+4+1+4+3}}\begin{bmatrix} 1 \\ 2 \\ 1 \\ -2 \\ 3 \\ \end{bmatrix}
+=
+\begin{bmatrix} 3 \\ 1 \\ 2 \\ -4 \\ 1 \\ \end{bmatrix}
+-\frac{-20}{\sqrt{13}}\begin{bmatrix}  1 \\ 2 \\ 1 \\ -2 \\ 3 \\ \end{bmatrix}
+\approx
+\begin{bmatrix}  2.0526 \\ 5.1053 \\ -0.9474 \\ 2.8947 \\ -1.8421 \\ \end{bmatrix}
+$
+\newline
+$
+\mathbf{u}_2 = \mathbf{v}_4 - \frac{\mathbf{u}_1^T\mathbf{v}_4}{\sqrt{\mathbf{u}_1\mathbf{u}_1}}\mathbf{u}_1 - \frac{u_2^Tv_4}{\sqrt{\mathbf{u}_2\mathbf{u}_2}}\mathbf{u}_2
+=
+\begin{bmatrix} 3 \\ 1 \\ 2 \\ -4 \\ 1 \\ \end{bmatrix}
+-\frac{3+2+2+8+3}{\sqrt{13}}\begin{bmatrix}  1 \\ 2 \\ 1 \\ -2 \\ 3 \\ \end{bmatrix}
+-\frac{\mathbf{u}_2^T\mathbf{v}_4}{6.5534} \begin{bmatrix}   2.0526 \\ 5.1053 \\ -0.9474 \\ 2.8947 \\ -1.8421 \\  \end{bmatrix}
+\approx
+\begin{bmatrix} 2.2462 \\ -0.4130 \\ 0.9632 \\ -1.8321 \\ -2.0159 \end{bmatrix}
+$
+\newline
+So we have an orthonormal basis:
+$
+\mathbf{U}
+=
+\begin{bmatrix}
+1  & 2.0526  & 2.2462  \\
+2  & 5.1053  & -0.4130 \\
+1  & -0.9474 & 0.9632  \\
+-2 & 2.8947  & -1.8321 \\
+3  & -1.8421 & -2.0159
+\end{bmatrix}
+$
+\newline
+Normalizing the basis we get:
+$
+\mathbf{e}
+=
+\begin{bmatrix}
+0.2294  & 0.3132  & 0.6099  \\
+0.4588  & 0.7790  & -0.1121 \\
+0.2294  & -0.1446 & 0.2615  \\
+-0.4588 & 0.4417  & -0.4974 \\
+0.6882  & -0.2811 & -0.5474
+\end{bmatrix}
+$
+
+\item Let
+$\mathbf{B}
+=
+\begin{bmatrix}
+1 & 2 & 1 & 3 & 5 \\
+2 & 5 & 3 & 1 & 6 \\
+1 & -2& -2& 2 & 1 \\
+-2& 3 & 5 & -4& -1\\
+3 & -2& -5& 1 & -1\\
+\end{bmatrix}
+$
+, find the range($\mathbf{B}$), the column space of $\mathbf{B}$, the rank of $\mathbf{B}$ and the null space of $\mathbf{B}$
+\newline
+We saw from above that $q_2$ and $q_5$ are linearly dependent on the other columns so the range will be the span of the remaining vecotrs.
+\newline
+range($\mathbf{B}$)=span(
+$
+\begin{bmatrix}
+1  \\
+2  \\
+1  \\
+-2 \\
+3  \\
+\end{bmatrix}
+\begin{bmatrix}
+1  \\
+3  \\
+-2 \\
+5  \\
+-5 \\
+\end{bmatrix}
+\begin{bmatrix}
+3  \\
+1  \\
+2  \\
+-4 \\
+1  \\
+\end{bmatrix}
+$
+)
+\newline
+The column space of $\mathbf{B}$ is the set of linearly independent vectors
+\{$
+\begin{bmatrix}
+1  \\
+2  \\
+1  \\
+-2 \\
+3  \\
+\end{bmatrix}
+\begin{bmatrix}
+1  \\
+3  \\
+-2 \\
+5  \\
+-5 \\
+\end{bmatrix}
+\begin{bmatrix}
+3  \\
+1  \\
+2  \\
+-4 \\
+1  \\
+\end{bmatrix}
+$\}
+\newline
+\newline
+Since we have 3 linearly independent vectors we have rank($\mathbf{B}$)=$3$
+\newline
+\newline
+Finding the null space:
+$$
+\begin{bmatrix}
+1  & 2  & 1  & 3  & 5  \\
+2  & 5  & 3  & 1  & 6  \\
+1  & -1 & -2 & 2  & 1  \\
+-2 & 3  & 5  & -4 & -1 \\
+3  & -2 & -5 & 1  & -1
+\end{bmatrix}
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d \\
+e \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+0\\
+0\\
+0\\
+0\\
+\end{bmatrix}
+\implies
+\begin{bmatrix}
+1  & 2  & 1  & 3  & 5  & 0 \\
+2  & 5  & 3  & 1  & 6  & 0 \\
+1  & -1 & -2 & 2  & 1  & 0 \\
+-2 & 3  & 5  & -4 & -1 & 0 \\
+3  & -2 & -5 & 1  & -1 & 0 \\
+\end{bmatrix}
+$$
+Row reduce with gaussian elimination:
+$$
+\begin{bmatrix}
+1  & 0  & -1 & 0  & 0  & 0 \\
+0  & 1  & 1  & 0  & 1  & 0 \\
+0  & 0  & 0  & 1  & 1  & 0 \\
+0  & 0  & 0  & 0  & 0  & 0 \\
+0  & 0  & 0  & 0  & 0  & 0 \\
+\end{bmatrix}
+$$
+\newline
+Free variables $c$ and $e$ which gives us
+$n_1 = \begin{bmatrix} 1 \\ -1 \\ 1 \\ 0 \\ 0 \\ \end{bmatrix}$
+and
+$n_2 = \begin{bmatrix} 0 \\ -1 \\ 0 \\ -1 \\ 1 \\ \end{bmatrix}$
+\newline
+So the null space is the span($n_1,n_2$)
+
+
+\end{enumerate}
+
+
+\end{document}
