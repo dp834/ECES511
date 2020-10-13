@@ -4,6 +4,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[shortlabels]{enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
 
 \author{Damien Prieur}
 \title{Special Assignment 1 \\ ECES 511}
@@ -213,16 +216,87 @@ D =
 \end{bmatrix}
 $$
 
+\newpage
 \item Simulate the linearized systems using MATLABS $lsim$ command.
 Plot (you will need your state space models from part (b) for this) the state trajectories over a variety of different initial conditions for each of your linearized models.
 \begin{enumerate}[i.]
 \item $u = 10, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_10.000000_initial_pos_1.570796}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_10.000000_initial_pos_1.570796}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 21.2, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_21.200000_initial_pos_0.000000}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_21.200000_initial_pos_0.000000}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{4} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_21.200000_initial_pos_0.785398}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_21.200000_initial_pos_0.785398}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{3} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_21.200000_initial_pos_1.047198}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_21.200000_initial_pos_1.047198}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_21.200000_initial_pos_1.570796}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_21.200000_initial_pos_1.570796}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 30, x_0 = \begin{bmatrix} -\frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_30.000000_initial_pos_-1.570796}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_30.000000_initial_pos_-1.570796}.png}
+\end{subfigure}
+\end{figure}
 \item $u = 30, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_15.000000_input_30.000000_initial_pos_0.000000}.png}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/linearized_45.000000_input_30.000000_initial_pos_0.000000}.png}
+\end{subfigure}
+\end{figure}
 \end{enumerate}
 
 \item Repeat the exact same input and initial conditions used in part (c) but this time using the non-linear model and MATLAB's $ode45$ command.
@@ -233,16 +307,124 @@ For example, what happens if you use the 45 volt linearized model and give an in
 What about 80 volts?
 Compare this to the non-linear model on the same plot?
 \newline
+\begin{enumerate}[i.]
+\item $u = 10, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_10.000000_initial_pos_1.570796_vs_ode45}.png}
+\end{figure}
+\item $u = 21.2, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_21.200000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{4} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_21.200000_initial_pos_0.785398_vs_ode45}.png}
+\end{figure}
+\item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{3} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_21.200000_initial_pos_1.047198_vs_ode45}.png}
+\end{figure}
+\item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_21.200000_initial_pos_1.570796_vs_ode45}.png}
+\end{figure}
+\item $u = 30, x_0 = \begin{bmatrix} -\frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_30.000000_initial_pos_-1.570796_vs_ode45}.png}
+\end{figure}
+\item $u = 30, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_30.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\item $u = 5, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_5.000000_initial_pos_1.570796_vs_ode45}.png}
+\end{figure}
+\item $u = 50, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_50.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\item $u = 80, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/input_80.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\end{enumerate}
 
 \item Compare (by plotting the trajectories on the same figure so that it is easy to compare) and discuss the results explaining the benefits and risks of the local linearization method.
 \newline
+We can see that the linearization around $u(t) = 15$ is quite accurate for values of $u(t) < 30$.
+These values are accurate since the linearization around sin(x) is accurate for equilibrium points near $\theta = 0$.
+But as the equilibrium point for $\theta$ grows it becomes more difficult to use a linearization for a point far away from the actual equilibrium point.
+For initial positions far from the equilibrium point both models do poorly since the linearization can't capture the complexity.
+\newline
+Based on these results it seems to be safe to use a linearized model if the equilibrium point you linearize around is close to or the same as where you expect to operate the system.
 
+\newpage
 \item Repeat the exact same input and initial conditions simulation for 4-5 seconds duration using the Rectangular, Trapazoidal, and Runge Kutta numerical approximation techniques.
 Compare and plot all three techniques on the same graph Vs the nonlinear model using $ode45$.
 \newline
+\begin{enumerate}[i.]
+\item $u = 10, x_0 = \begin{bmatrix} \frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.010000_input_10.000000_initial_pos_1.570796_vs_ode45}.png}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.050000_input_10.000000_initial_pos_1.570796_vs_ode45}.png}
+\end{figure}
+\newpage
+\item $u = 21.2, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.010000_input_21.200000_initial_pos_0.000000_vs_ode45}.png}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.050000_input_21.200000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\newpage
+\item $u = 21.2, x_0 = \begin{bmatrix} \frac{\pi}{4} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.010000_input_21.200000_initial_pos_0.785398_vs_ode45}.png}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.050000_input_21.200000_initial_pos_0.785398_vs_ode45}.png}
+\end{figure}
+\newpage
+\item $u = 30, x_0 = \begin{bmatrix} -\frac{\pi}{2} & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.010000_input_30.000000_initial_pos_-1.570796_vs_ode45}.png}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.050000_input_30.000000_initial_pos_-1.570796_vs_ode45}.png}
+\end{figure}
+\newpage
+\item $u = 30, x_0 = \begin{bmatrix} 0 & 0 & 0 \end{bmatrix}$
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.010000_input_30.000000_initial_pos_0.000000_vs_ode45}.png}
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/numerical_approx_dt_0.050000_input_30.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+\end{enumerate}
 
+\newpage
 \item Compare (by plotting the trajectories on the same figure so that it is easy to compare) and discuss the results explaining the difference between numerical methods such as accuracy and efficiency.
 \newline
+We can see that using more datapoints, either decreasing $\Delta t$ or using a method that uses more points, we get a better result.
+Rectangular integration is always the worst, but takes the fewest computations and is the easiest to implement.
+Trapezoidal gives a significantly better approximation even for relatively large $\Delta t$ compared to rectangular with only twice the computational overhead.
+Meanwhile the Runge Kutta method give an extremely accurate approximation, but requires 4 times the computations as the rectangular method and twice as much as the trapezoidal.
+Given that computation is now not difficult to come by and is fast enough to perform these operations in realtime there is no reason why you shouldn't use the Runge Kutta method unless you are in a very computationally constrained system.
+One interesting thing is that all methods appear to converge to the same result regardless of the error from previous terms, but this is most likey due to the simplicity of our system and the relatively small $\Delta t$.
+
 
 \end{enumerate}
 
