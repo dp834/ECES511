@@ -1,0 +1,500 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+
+\author{Damien Prieur}
+\title{Homework 3 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}[a)]
+\item Consider the linear system whose augmented matrix is given by
+$
+\left[
+\begin{array}{ccc|c}
+1 &  1 & 2 & 1 \\
+1 & -2 & 3 & b \\
+2 &  0 & b & 0 \\
+\end{array}
+\right]
+$
+, where $b$ is a real number.
+For what number $b$ will the system have a unique solution?
+\newline
+\newline
+We know that for a unique solution to exist the determinant must exist so what values of b are not allowed?
+Expand along the third row and we get
+$$
+\begin{vmatrix}
+1 &  1 & 2 \\
+1 & -2 & 3 \\
+2 &  0 & b \\
+\end{vmatrix}
+=
+ 2 * \begin{vmatrix} 1 & 2 \\ -2 & 3\\ \end{vmatrix}
+-0 * \begin{vmatrix} 1 & 2 \\  1 & 3\\ \end{vmatrix}
++b * \begin{vmatrix} 1 & 1 \\  1 &-2\\ \end{vmatrix}
+= 2*(3+4) + b(-2 -1)
+=14 - 3b
+$$
+This implies that $b \neq \frac{14}{3}$ and all other values of $b$ should have a unique solution.
+
+
+
+
+
+\item What can you say about the number of solutions to the system for other values of $b$?
+\newline
+\newline
+This means that for $b=\frac{13}{4}$ there is either no solution or infinitely many solutions, in our case there is at least one solution therefore there are infinitely many solutions.
+
+\end{enumerate}
+
+\section*{Problem 2}
+Manually find the matrix $\mathbf{Q}$ that will diagonalize the matrix
+$
+\mathbf{A}
+=
+\begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+-6&-11&-6 \\
+\end{bmatrix}
+$
+and compute the diagonalized form.
+Validate your solution with MATLAB using {\bf [V,D] = eig(A)}
+\newline
+\newline
+We can start by finding the eigenvalues and eigenvectors of $\mathbf{A}$;
+$$
+\begin{vmatrix}
+\lambda & 1 & 0 \\
+0 & \lambda & 1 \\
+-6&-11&\lambda-6 \\
+\end{vmatrix}
+=\lambda (\lambda(\lambda-6) + 11) - 1(6)
+=\lambda^3-6\lambda^2+11\lambda -6
+=(\lambda-1)(\lambda-2)(\lambda-3)
+$$
+$$
+\lambda_1 = 1 \quad
+\lambda_2 = 2 \quad
+\lambda_3 = 3
+$$
+Since we have 3 eigenvalues for our 3 dimensional matrix our diagonal matrix is
+$$
+\mathbf{\hat{A}}
+=
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3 \\
+\end{bmatrix}
+$$
+To find $\mathbf{Q}$ we need to find the 3 eigenvectors
+$$
+\mathbf{q}_1
+=
+\left[
+\begin{array}{ccc|c}
+1 & 1 & 0  & 0\\
+0 & 1 & 1  & 0\\
+-6&-11& -5 & 0\\
+\end{array}
+\right]
+=
+\begin{bmatrix}
+1 \\
+-1 \\
+1 \\
+\end{bmatrix}
+$$
+$$
+\mathbf{q}_2
+=
+\left[
+\begin{array}{ccc|c}
+2 & 1 & 0  & 0\\
+0 & 2 & 1  & 0\\
+-6&-11& -4 & 0\\
+\end{array}
+\right]
+=
+\begin{bmatrix}
+1 \\
+-2 \\
+4 \\
+\end{bmatrix}
+$$
+$$
+\mathbf{q}_3
+=
+\left[
+\begin{array}{ccc|c}
+3 & 1 & 0  & 0\\
+0 & 3 & 1  & 0\\
+-6&-11& -3 & 0\\
+\end{array}
+\right]
+=
+\begin{bmatrix}
+1 \\
+-3 \\
+6 \\
+\end{bmatrix}
+$$
+Which are trivially solved due to the first two rows.
+With our three eigenvectors we can find our $\mathbf{Q}$ matrix
+$$
+\mathbf{Q}
+=
+\begin{bmatrix}
+1 & 1 & 1 \\
+-1&-2 &-3 \\
+1 & 4 & 9 \\
+\end{bmatrix}
+$$
+
+\section*{Problem 3}
+Consider the companion-form matrix
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+-\alpha_1 & -\alpha_2 & -\alpha_3 & -\alpha_4 \\
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+\end{bmatrix}
+$$
+Show that its characteristic polynomial is given by
+$$\Delta (\lambda) = \lambda^4 + \alpha_1 \lambda^3 + \alpha_2 \lambda^2 + \alpha_3 \lambda + \alpha_4 $$
+Show that if $\lambda_1$ is an eigenvalue of $\mathbf{A}$ or a solution of $\Delta (\lambda) = 0 $ then
+$[ \lambda_i^3, \lambda_i^2, \lambda_i, 1]^T$ is an eigenvector of $\mathbf{A}$ associated with $\lambda_i$.
+\newline
+\newline
+$$
+\begin{vmatrix}
+\lambda +\alpha_1 & -\alpha_2 & -\alpha_3 & -\alpha_4 \\
+1 & \lambda & 0 & 0 \\
+0 & 1 & \lambda & 0 \\
+0 & 0 & 1 & \lambda \\
+\end{vmatrix}
+$$
+Expanding along the last row we get
+$$
+-1
+\begin{vmatrix}
+\lambda+\alpha_1 & -\alpha_2 & -\alpha_4 \\
+1 & \lambda & 0 \\
+0 & 1 & 0 \\
+\end{vmatrix}
++ \lambda
+\begin{vmatrix}
+\lambda + \alpha_1 & -\alpha_2 & -\alpha_3 \\
+1 & \lambda & 0 \\
+0 & 1 & \lambda \\
+\end{vmatrix}
+=
+-1(-1\alpha_4) + \lambda(-1(+\alpha_3) -+\lambda((\lambda+\alpha_1)\lambda + \alpha_2)
+= \lambda^4 + \alpha_1 \lambda^3 + \alpha_2 \lambda^2 + \alpha_3 \lambda + \alpha_4
+$$
+Using $\lambda_1$ an eigenvalue of $\mathbf{A}$ we get an eigenvector
+$$
+\left[
+\begin{array}{cccc|c}
+\alpha_1 - \lambda_1 & -\alpha_2 & -\alpha_3 & -\alpha_4  & 0\\
+1 & -\lambda_1 & 0 & 0 & 0 \\
+0 & 1 & -\lambda_1 & 0 & 0 \\
+0 & 0 & 1 & -\lambda_1 & 0 \\
+\end{array}
+\right]
+$$
+Solving using back substitution starting from the bottom row we get
+$$
+\mathbf{q}_1
+=
+\begin{bmatrix}
+\lambda_i^3 \\
+\lambda_i^2 \\
+\lambda_i^1 \\
+1 \\
+\end{bmatrix}
+$$
+
+
+\section*{Problem 4}
+Show that the companion-form matrix in Problem 3 is nonsingular if and only if $\alpha_4 \neq 0$
+Under this assumption show that its inverse equals
+$$
+\mathbf{A}^{-1}
+=
+\begin{bmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+-\dfrac{1}{\alpha_4} & -\dfrac{\alpha_1}{\alpha_4} & -\dfrac{\alpha_2}{\alpha_4} & -\dfrac{\alpha_3}{\alpha_4} \\
+\end{bmatrix}
+$$
+\newline
+\newline
+The equation from problem 3 is trivially singular if $\alpha_4$ is zero since the last column would be the zero vector.
+This means it is linearly dependent and therefore the matrix is not full rank.
+\newline
+So show that the given matrix is the inverse if $\mathbf{A}$ we can look at the product $\mathbf{A} \mathbf{A}^{-1}$.
+If it is the inverse we should get the identity matrix.
+
+$$
+\begin{bmatrix}
+-\alpha_1 & -\alpha_2 & -\alpha_3 & -\alpha_4 \\
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+-\dfrac{1}{\alpha_4} & -\dfrac{\alpha_1}{\alpha_4} & -\dfrac{\alpha_2}{\alpha_4} & -\dfrac{\alpha_3}{\alpha_4} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+$$
+Everything does work out and cancel to give the identity matrix, therefore $\mathbf{A}^{-1}$ is the inverse of $\mathbf{A}$.
+
+\section*{Problem 5}
+Manually compute the eigenvectors and generalized eigenvectors for the following matrix
+\begin{enumerate}[a)]
+\item Using the bottom up approach
+\newline
+\newline
+First we compute the eigenvectors and the generalized eigenvectors.
+$$
+\begin{bmatrix}
+3-\lambda & 2 & 3 \\
+0 & 3-\lambda & 4 \\
+0 & 0 & 3-\lambda \\
+\end{bmatrix}
+=
+(3-\lambda)(3-\lambda)(3-\lambda)
+$$
+Our eigenvalues are a triple root $\lambda_{1,2,3} = 3$. Solving for our eigenvectors
+$$
+\left[
+\begin{array}{ccc|c}
+3-3 & 2 & 3 & 0 \\
+0 & 3-3 & 4 & 0 \\
+0 & 0 & 3-3 & 0 \\
+\end{array}
+\right]
+\implies
+\mathbf{q}_1
+=
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+$$
+\left[
+\begin{array}{ccc|c}
+0 & 2 & 3 & 1 \\
+0 & 0 & 4 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{array}
+\right]
+=
+\mathbf{q}_2
+=
+\begin{bmatrix}
+0 \\
+\frac{1}{2} \\
+0 \\
+\end{bmatrix}
+$$
+$$
+\left[
+\begin{array}{ccc|c}
+0 & 2 & 3 & 0 \\
+0 & 0 & 4 & \frac{1}{2} \\
+0 & 0 & 0 & 0 \\
+\end{array}
+\right]
+=
+\mathbf{q}_3
+=
+\begin{bmatrix}
+0 \\
+\frac{-3}{16} \\
+\frac{1}{8}\\
+\end{bmatrix}
+$$
+Combining these we get
+$$
+\mathbf{Q}
+=
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & \frac{1}{2} & \frac{-3}{16} \\
+0 & 0 & \frac{1}{8} \\
+\end{bmatrix}
+$$
+
+\item Using the top down approach
+\newline
+\newline
+From the same problem as before we know our first eigenvector is
+$$
+\mathbf{q}_1
+=
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+Next solve
+$$(\mathbf{A} - \lambda\mathbf{I})^2
+\implies
+\begin{bmatrix}
+3-3 & 2 & 3 \\
+0 & 3-3 & 4 \\
+0 & 0 & 3-3 \\
+\end{bmatrix}
+\begin{bmatrix}
+3-3 & 2 & 3 \\
+0 & 3-3 & 4 \\
+0 & 0 & 3-3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 0 & 8 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+$$
+
+$$(\mathbf{A} - \lambda\mathbf{I})^3
+\implies
+=
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+$$
+Choose $\mathbf{q} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$. We get
+$$
+\mathbf{q}_3 = \mathbf{q}
+$$
+$$
+\mathbf{q}_2 = (\mathbf{A} -\lambda\mathbf{I})\mathbf{q} = 0 \implies
+\begin{bmatrix}
+0 & 2 & 3 \\
+0 & 0 & 4 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+1\\
+1\\
+1\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+5\\
+4\\
+0\\
+\end{bmatrix}
+$$
+$$
+\mathbf{q}_1 = (\mathbf{A} -\lambda\mathbf{I})^2\mathbf{q} = 0 \implies
+\begin{bmatrix}
+0 & 0 & 8 \\
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+1\\
+1\\
+1\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+8\\
+0\\
+0\\
+\end{bmatrix}
+$$
+$$
+\mathbf{q}_0 = (\mathbf{A} -\lambda\mathbf{I})^3\mathbf{q} = 0
+$$
+Combining these we get that
+$$
+\mathbf{Q}
+=
+\begin{bmatrix}
+8 & 5 & 1 \\
+0 & 4 & 1 \\
+0 & 0 & 1 \\
+\end{bmatrix}
+$$
+
+\item Compute the Jordan form from the similarity transform $J = Q^{-1}AQ$
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+3 & 2 & 3 \\
+0 & 3 & 4 \\
+0 & 0 & 3 \\
+\end{bmatrix}
+$$
+\newline
+\newline
+$$
+\mathbf{J}
+=
+\mathbf{Q}^{-1}
+\mathbf{A}
+\mathbf{Q}
+=
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 3 \\
+0 & 0 & 8 \\
+\end{bmatrix}
+\begin{bmatrix}
+3 & 2 & 3 \\
+0 & 3 & 4 \\
+0 & 0 & 3 \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & \frac{1}{2} & \frac{-3}{16} \\
+0 & 0 & \frac{1}{8} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+3 & 1 & 0 \\
+0 & 3 & 1 \\
+0 & 0 & 3 \\
+\end{bmatrix}
+$$
+\end{enumerate}
+Validate your work with Matlab using [u,v]=jordan(A)
+
+\end{document}
