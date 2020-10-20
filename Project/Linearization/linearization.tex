@@ -1,0 +1,285 @@
+\documentclass{beamer}
+\usetheme{Rochester}
+\usecolortheme{beetle}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[b]{esvect}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{subcaption}
+
+%Information to be included in the title page:
+\title{Project Proposal}
+\subtitle{ECES 511}
+\author{Damien Prieur}
+\date{10/1/2020}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Electromechanical Magnetic-Ball Suspension}
+\begin{itemize}[$\bullet$]
+\item Make an object levitate by controlling the current
+\end{itemize}
+\begin{figure}
+\includegraphics[scale=.75]{"../images/Electromechanical Magnetic-Ball Suspension setup".png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mathematical Model}
+Variables
+\begin{itemize}
+\item $R$ - Resistance
+\item $L$ - Inductance
+\item $v$ - Voltage
+\item $m$ - Mass
+\item $K$ - Coefficient that relates force to the magnetic field
+\item $g$ - Gravity
+\item $i$ - Current
+\item $y$ - Distance of Mass M to electromagnet
+\end{itemize}
+$$
+\begin{aligned}
+    &\begin{aligned}
+        \mathllap{v(t)} &= Ri(t) + L\frac{di(t)}{dt}
+    \end{aligned} \\
+    &\begin{aligned}
+        \mathllap{m\frac{d^2y(t)}{dt^2}} &= mg - K\frac{i^2(t)}{y(t)}
+    \end{aligned} \\
+\end{aligned}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{I/O and State Variables}
+\begin{itemize}[$\bullet$]
+\item We control the current $i$
+\item Goal is to control distance $y$
+\end{itemize}
+$$
+\vv{x}=
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+i \\
+y \\
+\dot{y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\text{Current} \\
+\text{Distance}\\
+\text{Velocity}
+\end{bmatrix}
+$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The Actual System}
+\begin{itemize}
+\item $R = 1 \Omega $
+\item $L = 0.01 \text{H}$
+\item $m = 0.05 \text{kg}$
+\item $K = 0.0001 \frac{\text{kg}\cdot\text{m}^2}{\text{A}^2\cdot\text{s}^2}$
+\item $g = 9.81 \frac{\text{m}}{\text{s}^2}$
+\end{itemize}
+$$ v(t) = Ri(t) + L \frac{di(t)}{dt} $$
+$$ \frac{d^2y(t)}{dt^2} = mg - K \frac{i^2(t)}{y(t)} $$
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+$$
+y(t) = x_2(t)
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Equilibrium}
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+Which gives us
+$$ x_1(t) = \frac{u(t)}{R}, \qquad x_3(t) = 0, \qquad x_2(t) = \frac{Ku^2(t)}{mgR^2} $$
+\begin{minipage}{.45\textwidth}
+    For a constant input voltage we get
+    $$ y_0 = \frac{Kv_0^2}{mgR^2} $$
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+    If we want to hold the ball at a height $y_0$
+    $$ v_0 = \sqrt{\frac{y_0mgR^2}{K}} $$
+\end{minipage}%
+\end{frame}
+
+\begin{frame}
+\frametitle{Linearization about the Equilibrium}
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+$$
+A
+=
+\frac{\partial h}{\partial x}
+=
+\begin{bmatrix}
+-\frac{R}{L} & 0 & 0\\
+0 & 0 & 1\\
+-\frac{2Kx_1(t)}{mx_2(t)} & \frac{K}{m}(\frac{x_1(t)}{x_2(t)})^2 & 0\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+-\frac{R}{L} & 0 & 0\\
+0 & 0 & 1\\
+-\frac{2Kx_{01}}{mx_{02}} & \frac{K}{m}(\frac{x_{01}}{x_{02}})^2 & 0\\
+\end{bmatrix}
+$$
+$$
+B
+=
+\frac{\partial h}{\partial u}
+=
+\begin{bmatrix}
+\frac{1}{L} \\
+0 \\
+0 \\
+\end{bmatrix}
+\qquad
+C
+=
+\begin{bmatrix}
+0 & 1 & 0
+\end{bmatrix}
+\qquad
+D
+=
+\begin{bmatrix}
+0
+\end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Sample Equilibria}
+$$
+v_0 = 7 \qquad
+x_0
+=
+\begin{bmatrix}
+7 \\
+.00998 \\
+0
+\end{bmatrix}
+\qquad
+A
+=
+\begin{bmatrix}
+-100 & 0 & 0 \\
+0 & 0 & 0 \\
+-2.803 & 982 & 0
+\end{bmatrix}
+$$
+\begin{figure}[H]
+\begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{{images/linearized_7.000000_input_7.000000_initial_pos_0.005000}.png}
+\end{subfigure}
+\begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{{images/linearized_7.000000_input_7.000000_initial_pos_0.009990}.png}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Sample Equilibria Continued lsim}
+\begin{figure}[H]
+\begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{{images/input_7.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{subfigure}
+\begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{{images/input_10.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{subfigure}
+\end{figure}
+Linearizing the system falls apart if we can't keep the system very close to it's equilibirum point
+\newline
+\end{frame}
+
+\begin{frame}
+\frametitle{Sample Equilibria Continued Numerical Methods}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{{images/numerical_approx_dt_0.010000_input_7.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+The system becomes very unpredictable when it is near it's equilibrium point, so numerical methods aren't accurate without lowering the step size.
+\end{frame}
+
+\begin{frame}
+\frametitle{Sample Equilibria Continued Numerical Methods}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{{images/numerical_approx_dt_0.001000_input_7.000000_initial_pos_0.000000_vs_ode45}.png}
+\end{figure}
+Even with ten times more datapoints we are still not converging on one result.
+The rectangular and trapezoidal methods haven't begun to capture the complexity.
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusion}
+\begin{itemize}[$\bullet$]
+\item This system is extremely unstable and will diverge if it doesn't start in an equilibirum state
+\item A linearized model should be accurate if the system can be held close to the equilibrium point
+\item Numerical methods do a bad job of approximating the system without decreasing the timestep near its equilibrium point
+\item The simulations make sense based on what we can expect from the system since the equilibrium point is not stable
+\end{itemize}
+\end{frame}
+
+\end{document}
