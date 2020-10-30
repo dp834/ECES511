@@ -1,0 +1,389 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+
+\author{Damien Prieur}
+\title{Homework 5 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+For the matrix $\mathbf{A}$ given as
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+0 & 1 \\
+-2 & -3 \\
+\end{bmatrix}
+$$
+Compute the state transition matrix $\varphi (t) = e^{\mathbf{A}t}$ by
+\begin{enumerate}[1.]
+\item Using the Laplace transform
+\newline
+$$ e^{\mathbf{A}t} = \mathcal{L}^{-1}(sI-A)^{-1} $$
+$$ (sI-A) =
+\begin{bmatrix}
+s  & -1 \\
+2 & s+3
+\end{bmatrix}
+\implies
+(sI-A)^{-1}
+=
+\frac{1}{(s+1)(s+2)}
+\begin{bmatrix}
+s+3  & 1 \\
+-2 & s
+\end{bmatrix}
+$$
+$$
+\mathcal{L}^{-1}(sI-A)^{-1}
+=
+\begin{bmatrix}
+2e^{-t}-e^{-2t}  & e^{-t}-e^{-2t} \\
+2e^{-2t}-2e^{-t} & 2e^{-2t}-e^{-t}
+\end{bmatrix}
+$$
+
+\item Using Cayley Hamilton's theorem
+\newline
+Let $f(\lambda) = e^{\lambda t}$
+$$\Delta(A) = \lambda^2 + 3\lambda + 2 = (\lambda+2)(\lambda+1)$$
+$$ \lambda_1 = -1 \qquad \lambda_2 = -2 $$
+Let $h(\lambda) = \beta_0 + \beta_1\lambda$
+\newline
+With $\lambda_1$ and knowing it's multiplicity is $1$ we have one equation
+$$ h(\lambda_1) = f(\lambda_1) \implies \beta_0 + \beta_1(-1) = e^{-t}$$
+With $\lambda_2$ and knowing it's multiplicity is $1$ we have another equation
+$$ h(\lambda_2) = f(\lambda_2) \implies \beta_0 + \beta_1(-2) = e^{-2t}$$
+$$ \beta_0 = e^{-2t}(2e^{t}-1)  \qquad \beta_1 = e^{-2t}(e^t-1) $$
+$$
+e^{\mathbf{A}t} = f(\mathbf{A}) = h(\mathbf{A}) =
+\beta_1\mathbf{A} + \beta_0
+=
+(e^{-2t}(e^t-1))\mathbf{A} + e^{-2t}(2e^{t}-1)\mathbf{I}
+$$
+$$
+e^{\mathbf{A}t}
+=
+\begin{bmatrix}
+2e^{-t}-e^{-2t}  & e^{-t}-e^{-2t} \\
+2e^{-2t}-2e^{-t} & 2e^{-2t}-e^{-t}
+\end{bmatrix}
+$$
+\item Determining the Jordan form $\mathbf{J}$ of $\mathbf{A}$ and computing $e^{\mathbf{A}t} = \mathbf{Q}e^{\mathbf{J}t}\mathbf{Q}^{-1}$
+\newline
+We already found $\lambda_1 = -1 \quad \lambda_2 = -2$ so we just need to find the associated eigenvectors.
+$$
+(-1I -A)q_1=0
+=
+\begin{bmatrix}
+-1 & -1 \\
+2 & 2
+\end{bmatrix}
+q_1=0
+\implies
+q_1 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+$$
+(-2I -A)q_2=0
+=
+\begin{bmatrix}
+-2 & -1 \\
+2 & 1
+\end{bmatrix}
+q_2=0
+\implies
+q_2 = \begin{bmatrix} 1 \\ -2 \end{bmatrix}
+$$
+We can now generate our diagonalized matricies
+$$
+\mathbf{Q}=\begin{bmatrix} q_1 & q_2 \end{bmatrix}
+\qquad
+\mathbf{J}
+=
+\begin{bmatrix}
+\lambda_1 & 0 \\
+0 & \lambda_2
+\end{bmatrix}
+\qquad
+Q^{-1}
+=\frac{1}{det(\mathbf{Q})} adj(\mathbf{Q})
+$$
+$$
+\mathbf{Q}=\begin{bmatrix} 1 & 1 \\ -1  & -2 \end{bmatrix}
+\qquad
+\mathbf{J}
+=
+\begin{bmatrix}
+-1 & 0 \\
+0 & -2
+\end{bmatrix}
+\qquad
+Q^{-1}
+= -
+\begin{bmatrix}
+2 & 1\\
+-1 & -1
+\end{bmatrix}
+$$
+$$
+e^{\mathbf{A}t}
+=\mathbf{Q} e^{\mathbf{J}t} \mathbf{Q}^{-1}
+$$
+$$
+\mathbf{Q}=
+\begin{bmatrix}
+1 & 1 \\
+-1  & -2
+\end{bmatrix}
+\begin{bmatrix}
+e^{-t} & 0 \\
+0 & e^{-2t}
+\end{bmatrix}
+\begin{bmatrix}
+2 & 1\\
+-1 & -1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 \\
+-1  & -2
+\end{bmatrix}
+\begin{bmatrix}
+2e^{-t} & e^{-t} \\
+-e^{-2t} & -e^{-2t}
+\end{bmatrix}
+$$
+$$
+e^{\mathbf{A}t}
+=
+\begin{bmatrix}
+2e^{-t}-e^{-2t}  & e^{-t}-e^{-2t} \\
+2e^{-2t}-2e^{-t} & 2e^{-2t}-e^{-t}
+\end{bmatrix}
+$$
+
+\end{enumerate}
+
+\section*{Problem 2}
+For the matrix $\mathbf{J}$ given as
+
+$$
+\mathbf{J}
+=
+\begin{bmatrix}
+2 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 2 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & -3& 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & -3& 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & -3& 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & -3& 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 4 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 4 \\
+\end{bmatrix}
+$$
+\begin{enumerate}[1.]
+\item Using the relationships in the notes, find $e^{\mathbf{J}t}$;
+$$
+e^{\mathbf{J}t}
+=
+\begin{bmatrix}
+e^{2t} & te^{2t} & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & e^{2t} & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & e^{-3t}& te^{-3t} & \frac{1}{2}t^2e^{-3t} & 0 & 0 & 0 \\
+0 & 0 & 0 & e^{-3t}& te^{-3t} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & e^{-3t}& 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & e^{-3t}& 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & e^{4t} & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{4t} \\
+\end{bmatrix}
+$$
+\newline
+\item Identify each Jordan block and its order.
+\newline
+There are $5$ Jordan blocks:
+\begin{enumerate}[1.]
+\item $J_1$ has order 2
+$$
+\begin{bmatrix}
+e^{2t} & te^{2t} \\
+0 & e^{2t} \\
+\end{bmatrix}
+$$
+
+\item $J_2$ has order $3$
+$$
+\begin{bmatrix}
+e^{-3t}& te^{-3t} & \frac{1}{2}t^2e^{-3t} \\
+0 & e^{-3t}& te^{-3t} \\
+0 & 0 & e^{-3t}
+\end{bmatrix}
+$$
+
+\item $J_3$ has order $1$
+$$
+\begin{bmatrix}
+e^{-3t}
+\end{bmatrix}
+$$
+
+\item $J_4$ has order $1$
+$$
+\begin{bmatrix}
+e^{4t}
+\end{bmatrix}
+$$
+
+\item $J_5$ has order $1$
+$$
+\begin{bmatrix}
+e^{4t}
+\end{bmatrix}
+$$
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{Problem 3}
+Supose we are given a set of points $\{(1,1), (2,2), (3,1.7), (3.5, 2.5), (4,3.6), (5,3.6)\}$.
+Between a linear model and a parabolic model which one fits these points better?
+Why?
+\begin{itemize}
+\item Linear Model
+\newline
+$$y = ax+b \implies y = \begin{bmatrix} x & 1 \end{bmatrix} \begin{bmatrix} a \\ b\end{bmatrix} $$
+Solve with least squares we find
+$$
+\begin{bmatrix} a \\ b \end{bmatrix}
+=
+\begin{bmatrix}
+1 &  1 \\
+2 &  1 \\
+3 &  1 \\
+3.5& 1 \\
+4 &  1 \\
+5 &  1
+\end{bmatrix}
+^{-1}
+\begin{bmatrix}
+1 \\
+2 \\
+1.7\\
+2.5\\
+3.6\\
+3.6
+\end{bmatrix}
+=
+\begin{bmatrix} .671 \\ .331 \end{bmatrix}
+$$
+To see how good we did we can look at the error by looking at how close our equation is for the given points.
+$$
+\text{Error} = \sum{(\hat{y} - y)^2} = \Delta{y}^T\Delta{y}
+$$
+$$
+\Delta{y} =
+\begin{bmatrix}
+1 &  1 \\
+2 &  1 \\
+3 &  1 \\
+3.5& 1 \\
+4 &  1 \\
+5 &  1
+\end{bmatrix}
+\begin{bmatrix} .671 \\ .331 \end{bmatrix}
+-
+\begin{bmatrix}
+1 \\
+2 \\
+1.7\\
+2.5\\
+3.6\\
+3.6
+\end{bmatrix}
+=
+\begin{bmatrix}
+.002 \\
+-.3269 \\
+.6441\\
+.1796\\
+-.5849\\
+.0861
+\end{bmatrix}
+$$
+$$ \text{Error} = \Delta{y}^T\Delta{y}= .9035 $$
+
+
+
+\item Parabolic Model
+\newline
+$$y = ax^2+bx+c \implies y = \begin{bmatrix}x^2 & x & 1 \end{bmatrix} \begin{bmatrix} a \\ b \\ c \end{bmatrix} $$
+Solve with least squares we find
+$$
+\begin{bmatrix} a \\ b \\ c\end{bmatrix}
+=
+\begin{bmatrix}
+1  & 1 &  1 \\
+4  & 2 &  1 \\
+9  & 3 &  1 \\
+3.5^2& 3.5& 1 \\
+16 & 4 &  1 \\
+25 & 5 &  1
+\end{bmatrix}
+^{-1}
+\begin{bmatrix}
+1 \\
+2 \\
+1.7\\
+2.5\\
+3.6\\
+3.6
+\end{bmatrix}
+=
+\begin{bmatrix} 0.312 \\ .4862 \\ .5514 \end{bmatrix}
+$$
+To see how good we did we can look at the error by looking at how close our equation is for the given points.
+$$
+\text{Error} = \sum{(\hat{y} - y)^2} = \Delta{y}^T\Delta{y}
+$$
+$$
+\Delta{y} =
+\begin{bmatrix}
+1  & 1 &  1 \\
+4  & 2 &  1 \\
+9  & 3 &  1 \\
+3.5^2& 3.5& 1 \\
+16 & 4 &  1 \\
+25 & 5 &  1
+\end{bmatrix}
+\begin{bmatrix} 0.312 \\ .4862 \\ .5514 \end{bmatrix}
+-
+\begin{bmatrix}
+1 \\
+2 \\
+1.7\\
+2.5\\
+3.6\\
+3.6
+\end{bmatrix}
+=
+\begin{bmatrix}
+.0688\\
+-.3514 \\
+.5906\\
+.1351\\
+-.6049\\
+.1618
+\end{bmatrix}
+$$
+$$ \text{Error} = \Delta{y}^T\Delta{y}= .8875 $$
+\end{itemize}
+Since our error is lower with the parabolic model it is better described within the region of points by it as well.
+\end{document}
