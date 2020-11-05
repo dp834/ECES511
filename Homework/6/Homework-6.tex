@@ -1,0 +1,382 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{float}
+
+\author{Damien Prieur}
+\title{Homework 5 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+For the Following problems, \textbf{manually} calculate the expression for the response then \textbf{validate} your answer with MATLAB Simulation.
+Ex. If you get the response of the system $y(t) = e^{-t}$, please build your system in MATLAB and compare the output obtained from the system with $y(t) = e^{-t}$ in one plot for verification.
+\section*{Problem 1}
+Find the response of the output variable
+$$ y = 2x_1+x_2 $$
+in the system described by state equations
+$$ \dot{x}_1 = -2x_1 + u $$
+$$ \dot{x}_2 = x_1 - x_2 $$
+for a constant input $u(t)=5$ for $t>0$, i $x_1(0)=0$, and $x_2=0$.
+\newline
+\newline
+First we rewrite the equation to be in the form
+$$ \dot{\mathbf{x}}(t)= \mathbf{A}\mathbf{x}(t) + \mathbf{B}\mathbf{u}(t) $$
+$$ \dot{\mathbf{y}}(t)= \mathbf{C}\mathbf{x}(t) + \mathbf{D}\mathbf{u}(t) $$
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+-2 &  0 \\
+ 1 & -1
+\end{bmatrix}
+\qquad
+\mathbf{B}
+=
+\begin{bmatrix}
+ 1  \\
+ 0
+\end{bmatrix}
+\qquad
+\mathbf{C}
+=
+\begin{bmatrix}
+ 2 & 1 \\
+\end{bmatrix}
+\qquad
+\mathbf{D}
+=
+\begin{bmatrix}
+ 0 & 0 \\
+\end{bmatrix}
+$$
+$$
+\mathbf{x}(t)
+=
+e^{\mathbf{At}}\mathbf{x}(0) + \int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+$$
+$$
+e^{\mathbf{At}}
+=
+\begin{bmatrix}
+e^{-2t} & 0 \\
+e^{-t}-e^{-2t} & e^{-t}
+\end{bmatrix}
+$$
+$$
+e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau)
+=
+\begin{bmatrix}
+5e^{-2(t-\tau)} \\
+5e^{-(t-\tau)}-5e^{-2(t-\tau)}
+\end{bmatrix}
+$$
+Since $x(0)=0$ we only need to evaluate the integral.
+$$
+x(t)
+=
+\int_0^t
+\begin{bmatrix}
+5e^{-2(t-\tau)} \\
+5e^{-(t-\tau)}-5e^{-2(t-\tau)}
+\end{bmatrix}
+d\tau
+=
+\frac{5}{2}
+\begin{bmatrix}
+1 - e^{-2t} \\
+e^{-2t}(e^{t}-1)^2
+\end{bmatrix}
+$$
+Since $\mathbf{D}$ is zero we can find $\mathbf{y}$ with $\mathbf{y} = \mathbf{C}x(t)$
+$$\mathbf{y}(t) = \mathbf{C}x(t) = \frac{5}{2}(3 - e^{-2t} - 2e^{-t})$$
+$$\mathbf{y}(t) = \frac{5}{2}(3 - e^{-2t} - 2e^{-t})$$
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/p1_predicted_vs_simulation}.png}
+\end{figure}
+
+
+\newpage
+\section*{Problem 2}
+\begin{figure}[H]
+\centering
+\begin{circuitikz}
+\draw
+    (0,0) to[american voltage source, l=$V_s(t)$] (0,4)
+    to[resistor,  l=$R$] (2,4)
+    to[capacitor, l=$C$] (4,4)
+    to[inductor,  l=$L$] (4,0)
+    -- (0,0)
+    ;
+\end{circuitikz}
+\end{figure}
+Given the standard RLC circuit (R = $1.2$, C = $1$, L = $0.2$).
+To build the state space equations, we choose capacitor voltage $v_c(t)=x_1(t)$ and inductor current $i_l(t)=x_2(t)$ as state variables and $v_c(t)$ as output.
+\newline
+\begin{enumerate}[1)]
+\item Find the state space equation for the RLC system
+\newline
+We can start by expressing our state variables using Kirchoff's Voltage law.
+$$ V_s(t) = V_r(t) + V_c(t) + V_l(t) $$
+$$ V_s(t) = iR + V_c(t) + L\frac{di}{dt} $$
+$$ \frac{dV_c}{dt} = \frac{i}{C}  $$
+Rewriting these in terms of our state variables we get the state equation.
+$$ \dot{x}_1 = \frac{x_2}{C} $$
+$$ \dot{x}_2 = \frac{1}{L}(V_s(t) - x_2R - x_1) $$
+$$ y = x_1$$
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+ 0 &  \frac{1}{C} \\
+ -\frac{1}{L} & -\frac{R}{L}
+\end{bmatrix}
+\qquad
+\mathbf{B}
+=
+\begin{bmatrix}
+ 0  \\
+\frac{1}{L}
+\end{bmatrix}
+\qquad
+\mathbf{C}
+=
+\begin{bmatrix}
+ 1 & 0 \\
+\end{bmatrix}
+\qquad
+\mathbf{D}
+=
+\begin{bmatrix}
+ 0 & 0 \\
+\end{bmatrix}
+$$
+Plugging in our values
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+ 0 &  1 \\
+ -5 & -6
+\end{bmatrix}
+\qquad
+\mathbf{B}
+=
+\begin{bmatrix}
+ 0  \\
+ 5
+\end{bmatrix}
+\qquad
+\mathbf{C}
+=
+\begin{bmatrix}
+ 1 & 0 \\
+\end{bmatrix}
+\qquad
+\mathbf{D}
+=
+\begin{bmatrix}
+ 0 & 0 \\
+\end{bmatrix}
+$$
+
+
+\item If $v_c(0)=0$,$i_l(0)=5$,$v_s(t)=0$, find the $\mathbf{x}(t)$ for the system
+\newline
+$$
+\mathbf{x}(t)
+=
+e^{\mathbf{At}}\mathbf{x}(0) + \int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+$$
+$$ x(0) = \begin{bmatrix} 0 \\ 5 \end{bmatrix} $$
+$$
+e^{\mathbf{A}t}
+=
+\begin{bmatrix}
+.25 e^{-1t}-0.25 e^{-5t} & 0.25 e^{-1t}-0.25 e^{-5t} \\
+ 1.25 e^{-5t}-1.25 e^{-1t} & 1.25 e^{-5t}-0.25 e^{-1t} \\
+\end{bmatrix}
+$$
+$$
+e^{\mathbf{A}t}x(0)
+=
+\begin{bmatrix}
+1.25 e^{-1t}-1.25 e^{-5t} \\
+6.25 e^{-5t}-1.25 e^{-1t} \\
+\end{bmatrix}
+$$
+$$
+\mathbf{u}=0 \implies
+e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}
+=
+0
+$$
+$$
+\implies
+\mathbf{x}(t)
+=
+\begin{bmatrix}
+1.25 e^{-1t}-1.25 e^{-5t} \\
+6.25 e^{-5t}-1.25 e^{-1t} \\
+\end{bmatrix}
+$$
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/p2_2_predicted_vs_simulation}.png}
+\end{figure}
+\item If $v_c(0)=0$,$i_l(0)=0$,$v_s(t)=5$, find the $y(t)$ for the system
+\newline
+We have mostly the same situation just a few parameters have changed.
+$$ x(0) = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \qquad v_s \neq 0 $$
+So we must evaluate the convolution.
+$$
+\int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+=
+\begin{bmatrix}
+5 +                1.25 e^{-5t} - 6.25 e^{-1t} \\
+-1.7763*10^{-15}  -6.25 e^{-5t} + 6.25 e^{-1t}
+\end{bmatrix}
+=x(t)
+$$
+And since the initial condition is zero the state variables are just the convolution.
+$$y(t) = \mathbf{C}x(t)$$
+$$y(t) = 5 + 1.25 e^{-5t} - 6.25 e^{-1t} $$
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/p2_3_predicted_vs_simulation}.png}
+\end{figure}
+\end{enumerate}
+
+\newpage
+\section*{Problem 3}
+Consider the system
+$$ \ddot{x} + 4\dot{x} +4x=u $$
+\begin{enumerate}[1)]
+\item Find the state space model for the system
+\newline
+Let $x_1 = x$ and $x_2 = \dot{x}$
+$$
+\dot{x}
+=
+\begin{bmatrix}
+\dot{x}_1\\
+\dot{x}_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_2 \\
+-4x_2 - 4 x_1 + u
+\end{bmatrix}
+$$
+$$
+\mathbf{A}
+=
+\begin{bmatrix}
+0 & 1 \\
+-4 & -4
+\end{bmatrix}
+\qquad
+\mathbf{B}
+=
+\begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+\qquad
+\mathbf{C}
+=
+\begin{bmatrix}
+1 & 0
+\end{bmatrix}
+\qquad
+\mathbf{D}
+=
+\begin{bmatrix}
+0 & 0
+\end{bmatrix}
+$$
+\item Find the transfer function for the system. (Hint: you can use $\mathbf{C}(s\mathbf{I}-\mathbf{A}^{-1})\mathbf{B}+D$)
+\newline
+$$
+s\mathbf{I}-\mathbf{A}
+=
+\begin{bmatrix}
+s  & -1\\
+4 & s+4
+\end{bmatrix}
+\implies
+(s\mathbf{I}-\mathbf{A})^{-1}
+=
+\frac{1}{s^2 +4s +4}
+\begin{bmatrix}
+s+4 & 1\\
+-4   & s
+\end{bmatrix}
+$$
+$$
+\mathbf{\hat{x}}(s)
+=
+\frac{1}{s^2 +4s +4}
+\begin{bmatrix}
+1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+s+4 & 1\\
+-4   & s
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+1
+\end{bmatrix}
+=
+\frac{1}{s^2 +4s +4}
+$$
+$$
+\mathbf{\hat{x}}(s)
+=
+\frac{1}{s^2 +4s +4}
+$$
+\item Suppose $u(t) = e^{-2t}\sin{(t)}$ for $t \geq 0$, and $\ddot{x}(0) = \dot{x}(0) = 0$. Find the solution $x(t)$
+\newline
+We want to use $\mathbf{\hat{y}}(s) = \mathbf{\hat{G}}(s)\mathbf{\hat{u}}(s) $ where $\mathbf{\hat{G}}(s)$ is what we computed in part 2.
+First we must find the input's representation in the laplace space.
+$$
+\mathbf{\hat{u}}(s)
+=
+\mathcal{L}\{e^{-2t}\sin{(t)}\}
+=
+\frac{1}{s^2+4s+5}
+\quad t> 0
+$$
+$$
+\mathbf{\hat{y}}(s)
+=
+\frac{1}{s^2+4s+5}
+\frac{1}{s^2 +4s +4}
+=
+\frac{1}{(2+s)^2(5+4s+s^2)}
+$$
+$$
+y(t)
+=
+\mathcal{L}^{-1}(\mathbf{\hat{y}})
+=
+e^{-2t}(t-\sin{(t)})
+$$
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=.8\linewidth]{{images/p3_predicted_vs_simulation}.png}
+\end{figure}
+
+
+\end{enumerate}
+\end{document}
