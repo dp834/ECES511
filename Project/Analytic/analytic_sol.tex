@@ -1,0 +1,388 @@
+\documentclass{beamer}
+\usetheme{Rochester}
+\usecolortheme{beetle}
+
+\usepackage[shortlabels]{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[b]{esvect}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{subcaption}
+
+%Information to be included in the title page:
+\title{Analytic Solution}
+\subtitle{ECES 511}
+\author{Damien Prieur}
+\date{11/10/2020}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Electromechanical Magnetic-Ball Suspension}
+\begin{itemize}[$\bullet$]
+\item Make an object levitate by controlling the current
+\end{itemize}
+\begin{figure}
+\includegraphics[scale=.75]{"../images/Electromechanical Magnetic-Ball Suspension setup".png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{The System}
+\begin{itemize}
+\item $R = 1 \Omega $
+\item $L = 0.01 \text{H}$
+\item $m = 0.05 \text{kg}$
+\item $K = 0.0001 \frac{\text{kg}\cdot\text{m}^2}{\text{A}^2\cdot\text{s}^2}$
+\item $g = 9.81 \frac{\text{m}}{\text{s}^2}$
+\end{itemize}
+$$ v(t) = Ri(t) + L \frac{di(t)}{dt} $$
+$$ \frac{d^2y(t)}{dt^2} = mg - K \frac{i^2(t)}{y(t)} $$
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+$$
+y(t) = x_2(t)
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Equilibrium}
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+Which gives us
+$$ x_1(t) = \frac{u(t)}{R}, \qquad x_3(t) = 0, \qquad x_2(t) = \frac{Ku^2(t)}{mgR^2} $$
+\begin{minipage}{.45\textwidth}
+    For a constant input voltage we get
+    $$ y_0 = \frac{Kv_0^2}{mgR^2} $$
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+    If we want to hold the ball at a height $y_0$
+    $$ v_0 = \sqrt{\frac{y_0mgR^2}{K}} $$
+\end{minipage}%
+\end{frame}
+
+\begin{frame}
+\frametitle{Linearization about the Equilibrium}
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2 \\
+\dot{x}_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{u(t)-Rx_1(t)}{L} \\
+x_3(t) \\
+-\frac{Kx_1^2(t)}{mx_2(t)} + g
+\end{bmatrix}
+$$
+$$
+A
+=
+\frac{\partial h}{\partial x}
+=
+\begin{bmatrix}
+-\frac{R}{L} & 0 & 0\\
+0 & 0 & 1\\
+-\frac{2Kx_1(t)}{mx_2(t)} & \frac{K}{m}(\frac{x_1(t)}{x_2(t)})^2 & 0\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+-\frac{R}{L} & 0 & 0\\
+0 & 0 & 1\\
+-\frac{2Kx_{01}}{mx_{02}} & \frac{K}{m}(\frac{x_{01}}{x_{02}})^2 & 0\\
+\end{bmatrix}
+$$
+$$
+B
+=
+\frac{\partial h}{\partial u}
+=
+\begin{bmatrix}
+\frac{1}{L} \\
+0 \\
+0 \\
+\end{bmatrix}
+\qquad
+C
+=
+\begin{bmatrix}
+0 & 1 & 0
+\end{bmatrix}
+\qquad
+D
+=
+\begin{bmatrix}
+0
+\end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Sample Equilibria}
+$$
+v_0 = 7 \qquad
+x_0
+=
+\begin{bmatrix}
+7 \\
+.00998 \\
+0
+\end{bmatrix}
+\qquad
+A
+=
+\begin{bmatrix}
+-100 & 0 & 0 \\
+0 & 0 & 1 \\
+-2.803 & 982 & 0
+\end{bmatrix}
+\qquad
+B
+=
+\begin{bmatrix}
+100 \\
+0 \\
+0
+\end{bmatrix}
+$$
+$$
+\mathbf{x}(t)
+=
+e^{\mathbf{At}}\mathbf{x}(0) + \int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+$$
+Eigenvalues
+$$
+(\lambda I - A)x = 0
+\quad
+\begin{bmatrix}
+\lambda + 100 & 0 & 0 \\
+0 & \lambda & 1 \\
+2.803 & -982 & \lambda
+\end{bmatrix}
+x = 0
+$$
+$$
+98200 + 982 \lambda - 100 \lambda^2 - \lambda^3
+$$
+$$
+\implies \lambda_1 = -100 \lambda_2 = 31.3369 \quad \lambda_3 = -31.3369
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Jordan Decomposition}
+$$
+(A-\lambda_1 I)q_1=0,
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 100 & 1 \\
+-2.803 & 982 & 100
+\end{bmatrix}
+q_1
+=
+0
+\implies
+q_1 = \begin{bmatrix} 3217.267 \\ 1 \\ -100 \end{bmatrix}
+$$
+$$
+\begin{bmatrix}
+-131.3369 & 0 & 0 \\
+0 & -31.3369 & 1 \\
+-2.803 & 982 &-31.3369 
+\end{bmatrix}
+q_2
+=0
+\implies
+q_2 = \begin{bmatrix} 0 \\ 1 \\ 31.3369 \end{bmatrix}
+$$
+$$
+\begin{bmatrix}
+-68.6631 & 0 & 0 \\
+0 & 31.3369 & 1 \\
+-2.803 & 982 & 31.3369
+\end{bmatrix}
+q_3
+=
+0
+\implies
+q_3 = \begin{bmatrix} 0 \\ 1 \\ -31.3369 \end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Jordan Form}
+Normalizing eigenvectors
+$$
+q_1=
+\begin{bmatrix} .999517 \\ -3.1067\times10^{-4} \\ .031067 \end{bmatrix}
+\quad
+q_2=
+\begin{bmatrix} 0 \\ .031895 \\ .999491 \end{bmatrix}
+q_3=
+\begin{bmatrix} 0 \\ .031895 \\ -.999491 \end{bmatrix}
+$$
+$$
+Q
+=
+\begin{bmatrix}
+.999517             & 0 & 0 \\
+-3.1067\times10^{-4} & .031895 & .031895 \\
+.031067            & .999491 & -.999491
+\end{bmatrix}
+$$
+$$
+J
+=
+\begin{bmatrix}
+-100 & 0 & 0 \\
+0 & 31.3369 & 0 \\
+0 & 0 & -31.3369
+\end{bmatrix}
+$$
+$$
+Q^{-1}
+=
+\begin{bmatrix}
+1.00048 & 0. & 0. \\
+-0.0106764 & 15.6764 & 0.500255 \\
+ 0.0204215 & 15.6764 & -0.500255 \\
+\end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Matrix Exponentiation}
+$$ e^{At} = Qe^JQ^{-1}
+=
+Q
+\begin{bmatrix}
+e^{-100t} & 0 & 0 \\
+0 & e^{31.3369t} & 0 \\
+0 & 0 & e^{-31.3369t}
+\end{bmatrix}
+Q^{-1}
+$$
+This Expression becomes very large so each column of the matrix will be broken up with the first column followed by the next two.
+$$
+\begin{bmatrix}
+e^{\lambda_1 t} 																								\\
+-3.10823\times 10^{-4} e^{\lambda_1 t}+6.51349\times 10^{-4} e^{\lambda_3 t}-3.40526\times 10^{-4} e^{\lambda_2 t} \\
+ 0.0310823 e^{\lambda_1 t}-0.0204112 e^{\lambda_3 t}-0.010671 e^{\lambda_2 t} 										\\
+\end{bmatrix}
+$$
+$$
+\begin{bmatrix}
+0 								   			& 0 \\
+0.5 e^{\lambda_3 t}+0.5 e^{\lambda_2 t} 			& 0.0159556 e^{\lambda_2 t}-0.0159556 e^{\lambda_3 t} \\
+15.6684 e^{\lambda_2 t}-15.6684 e^{\lambda_3 t} 	& 0.5 e^{\lambda_3 t}+0.5 e^{\lambda_2 t} \\
+\end{bmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Step Response}
+$$\mathbf{u}(t) = \begin{bmatrix} 1 \end{bmatrix} $$
+$$
+\mathbf{x}(t)
+=
+e^{\mathbf{At}}\mathbf{x}(0) + \int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+$$
+$$
+\mathbf{x}(t)
+=
+e^{\mathbf{A}t}\mathbf{x}(0)
++
+$$
+$$
+\begin{bmatrix}
+1 - e^{-100. t} \\
+ 0.002854\, +3.1082\times 10^{-4} e^{\lambda_1 t}-0.002079 e^{\lambda_3 t}-0.00109 e^{\lambda_2 t} \\
+ -0.03108 e^{\lambda_1 t}+0.0651e^{\lambda_3 t}-0.03405 e^{\lambda_2 t} \\
+\end{bmatrix}
+$$
+For a given initial condition
+\end{frame}
+
+\begin{frame}
+\frametitle{Step Response Analysis}
+For a general valid starting condition for the system the following will hold.
+\begin{itemize}[$\bullet$]
+\item Current term will approach a stable value of $1$ amp
+\item Height will drop exponentially as the $\lambda_1$ and $\lambda_2$ terms go to zero while the $\lambda_3$ term corresponds to the constant gravity term which will accelerate the ball downwards until it hits the ground.
+\item The vertical velocity term will also continually increase due to gravity.
+\end{itemize}
+The system is unstable given the point we linearized around with an input $u(t)=1$
+\end{frame}
+
+\begin{frame}
+\frametitle{Closed Form Solution}
+$$\mathbf{x}(0) = \begin{bmatrix} 0 \\ .01 \\ 0 \end{bmatrix} $$
+$$\mathbf{x}_1(t) = 1-e^{-100t}$$
+$$\mathbf{x}_2(t) = .002854+3.1082\times 10^{-4}e^{-100 t} + .0029215e^{-31.3369 t} +.0039133 e^{31.3369 t} $$
+$$\mathbf{x}_3(t) = -.091549e^{-31.3369 t} +.12263 e^{31.3369 t} $$
+\end{frame}
+
+\begin{frame}
+\frametitle{Step Response Graph}
+\begin{figure}[h!]
+\centering
+	\includegraphics[width=1\linewidth]{{images/linearized_7.000000_input_1.000000_initial_pos_0.010000}.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Step Response Graph}
+\begin{itemize}[$\bullet$]
+	\item The Current appears to be the correct equation which make sense due to the fact that that part of the system can be described by a linear system.
+	\item The Position and velocity graphs appear to be close but not accurate to the simulation. I would attribute this to lack of numerical precision since most of the numbers are quite small and being multiplied making them even smaller.
+    Also while computing my close form solution I removed terms that were very close to zero so that I didn't have to carry them through the equations.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Poles and Zeros}
+$$\mathcal{L}(s) = \mathbf{C}(s\mathbf{I}-\mathbf{A}^{-1})\mathbf{B} $$
+$$\mathbf{\hat{x}}(s) = \frac{-280.3}{s^3+100 s^2-982 s-98200} $$
+$$ = \frac{-280.3}{(s-31.3369) (s+31.3369) (s+100)}$$
+$$\mathcal{L}(u) = \frac{1}{s} $$
+$$\mathbf{\hat{y}}(s) = \frac{-280.3}{s(s-31.3369) (s+31.3369) (s+100)}$$
+We can see from the factored form that we have no zeros and $4$ poles.
+$$ s = \lambda_1 \quad s = \lambda_2 \quad s = \lambda_3 \quad s = 0 $$
+\end{frame}
+\end{document}
