@@ -1,0 +1,311 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{float}
+
+\author{Damien Prieur}
+\title{Homework 7 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+Use two different methods to find the unit-step response of
+$$
+\mathbf{\dot{x}}
+=
+\begin{bmatrix}
+0 & 1 \\
+-2 & -2
+\end{bmatrix}
+\mathbf{x}
++
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+u
+$$
+$$ y = \begin{bmatrix}2 & 3 \end{bmatrix} \mathbf{x} $$
+\begin{enumerate}[1.]
+\item Convolution
+$$ \mathbf{y}(t) = \mathbf{C}\mathbf{x}(t) $$
+$$ \mathbf{x}(t)
+=
+e^{\mathbf{At}}\mathbf{x}(0) + \int_0^t e^{\mathbf{A}(t-\tau)}\mathbf{B}\mathbf{u}(\tau) d\tau
+$$
+$$
+e^{\mathbf{At}} =
+\begin{bmatrix}
+e^{-t} (\sin (t)+\cos (t)) & e^{-t} \sin (t) \\
+-2 e^{-t} \sin (t) & e^{-t} (\cos (t)-\sin (t))
+\end{bmatrix}
+$$
+Since the initial conditon is not specified I will be assuming $\begin{bmatrix} 0 \\ 0 \end{bmatrix}$.
+The first part of the equation will go to zero.
+$$
+\int_0^t
+\begin{bmatrix}
+e^{\tau - t} (\sin (t-\tau)+\cos (t-\tau)) & e^{\tau - t} \sin (t-\tau) \\
+-2 e^{\tau - t} \sin (t-\tau) & e^{\tau - t} (\cos (t-\tau)-\sin (t-\tau))
+\end{bmatrix}
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+d\tau
+$$
+$$
+=
+\int_0^t
+\begin{bmatrix}
+e^{\tau -t} (2 \sin (t-\tau )+\cos (t-\tau )) \\
+e^{\tau -t} (\cos (t-\tau )-3 \sin (t-\tau ))
+\end{bmatrix}
+d\tau
+$$
+$$
+=
+\begin{bmatrix}
+\frac{3}{2}-\frac{1}{2} e^{-t} (\sin (t)+3 \cos (t)) \\
+e^{-t} (2 \sin (t)+\cos (t))-1
+\end{bmatrix}
+$$
+$$
+\implies
+y
+=
+\begin{bmatrix} 2 & 3 \end{bmatrix}
+\begin{bmatrix}
+\frac{3}{2}-\frac{1}{2} e^{-t} (\sin (t)+3 \cos (t)) \\
+e^{-t} (2 \sin (t)+\cos (t))-1
+\end{bmatrix}
+$$
+$$
+y(t)
+=
+5 e^{-t} \sin (t)
+$$
+
+
+\item Laplace
+Find the solution in the laplace space by computing $\mathbf{\hat{y}}(s) = \mathbf{\hat{G}}(s)\mathbf{\hat{u}}(s)$.
+Where $\mathbf{\hat{G}} = \mathbf{C}(s\mathbf{I}-\mathbf{A})^{-1}\mathbf{B} + D$
+$$\mathbf{\hat{G}} =
+\begin{bmatrix} 2 & 3 \end{bmatrix}
+\left(
+\begin{bmatrix}
+s & 0 \\
+0 & s
+\end{bmatrix}
+-
+\begin{bmatrix}
+0 & 1 \\
+-2 & -2
+\end{bmatrix}
+\right)
+^{-1}
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$$
+$$
+\left(
+\begin{bmatrix}
+s & 0 \\
+0 & s
+\end{bmatrix}
+-
+\begin{bmatrix}
+0 & 1 \\
+-2 & -2
+\end{bmatrix}
+\right)
+^{-1}
+=
+\begin{bmatrix}
+\frac{s+2}{s (s+2)+2} & \frac{1}{s (s+2)+2} \\
+-\frac{2}{s (s+2)+2} & \frac{s}{s (s+2)+2}
+\end{bmatrix}
+$$
+$$\mathbf{\hat{G}} = \frac{5 s}{s (s+2)+2}$$
+$$\mathbf{\hat{u}} = \mathcal{L}\{u\} = \frac{1}{s} $$
+$$\mathbf{\hat{y}} = \mathbf{\hat{G}}\mathbf{\hat{u}} = \frac{5 s}{s(s (s+2)+2)} = \frac{5}{(s+1)^2 + 1}$$
+$$ y(t) = \mathcal{L}^{-1}\{\mathbf{\hat{y}}\} = 5 e^{t} \sin(t) $$
+$$ y(t) = 5 e^{-t} \sin(t) $$
+\end{enumerate}
+
+\newpage
+\section*{Problem 2}
+Discretize the state equation from Problem 1 for $T = 1$ and $T = \pi$
+$$
+\mathbf{A}_d = e^{\mathbf{A}T}
+\qquad
+\mathbf{B}_d = \int_0^Te^{\mathbf{A}\alpha}d\alpha\mathbf{B}
+\qquad
+\mathbf{C}_d = \mathbf{C}
+\qquad
+\mathbf{D}_d = \mathbf{D}
+$$
+$$
+\mathbf{A}_d =
+\begin{bmatrix}
+e^{-T} (\sin (T)+\cos (T)) & e^{-T} \sin (T) \\
+-2e^{-T} \sin (T) & e^{-T} (\cos (T)-\sin (T))
+\end{bmatrix}
+$$
+$$
+\mathbf{B}_d =
+\begin{bmatrix}
+1-e^{-T} \cos (T) & \frac{1}{2}-\frac{1}{2} e^{-T} (\sin (T)+\cos (T)) \\
+e^{-T} (\sin (T)+\cos (T))-1 & e^{-T} \sin (T)
+\end{bmatrix}
+$$
+$$
+\mathbf{C}_d =
+\begin{bmatrix}
+2 & 3
+\end{bmatrix}
+$$
+\begin{enumerate}[a)]
+\item Let $T = 1$
+$$
+\mathbf{A}_d =
+\begin{bmatrix}
+ 0.508326 & 0.30956 \\
+-0.61912 & -0.110794
+\end{bmatrix}
+$$
+$$
+\mathbf{B}_d =
+\begin{bmatrix}
+ 1.04707 \\
+-0.182114 \\
+\end{bmatrix}
+$$
+$$
+\mathbf{C}_d =
+\begin{bmatrix}
+2 & 3
+\end{bmatrix}
+$$
+
+
+\item Let $T = \pi$
+$$
+\mathbf{A}_d =
+\begin{bmatrix}
+-0.0432139 & 0. \\
+ 0. & -0.0432139
+\end{bmatrix}
+$$
+$$
+\mathbf{B}_d =
+\begin{bmatrix}
+ 1.56482 \\
+-1.04321
+\end{bmatrix}
+$$
+$$
+\mathbf{C}_d =
+\begin{bmatrix}
+2 & 3
+\end{bmatrix}
+$$
+\end{enumerate}
+$$ x[k+1] = A_dx[k]+B_d[k] $$
+$$ y[k] = C_dx[k]$$
+
+\newpage
+\section*{Problem 3}
+Given the scalar system $\dot{x} = ax + br$ where $x(0)=10$
+Let $ a = -2 \quad b = 5$ and $r(t)$ is the unit step, $u(t)$
+\newline
+Part I
+\begin{itemize}[$\bullet$]
+\item Using the state transition equation compute the closed solution for $x(t)$ with the given initial condition and input $u(t)$.
+Use the Convolution integal form (not Laplace).
+\newline
+\newline
+$$ x(t)
+=
+e^{at}x(0) + \int_0^t e^{a(t-\tau)}br(\tau) d\tau
+$$
+$$
+x(t)
+=
+10e^{-2t} + \int_0^t 5e^{-2(t-\tau)} d\tau
+$$
+$$
+x(t)
+=
+10e^{-2t} + \frac{5}{2}-\frac{5 e^{-2 t}}{2}
+$$
+$$
+x(t)
+=
+\frac{5}{2} (3 e^{-2 t}+1)
+$$
+\item Validate your solution using the Laplace transform from the State transition equation and invert.
+$$\mathcal{L}(\dot{x}) = \mathcal{L}(ax + br)$$
+$$s\hat{x}(s) - x(0) = a\hat{x}(s) + b\frac{1}{s}$$
+$$\hat{x}(s) = \frac{1}{s}\frac{b}{s-a} + \frac{x(0)}{s-a}$$
+$$\mathcal{L}^{-1}(\hat{x}(s)) = x(t) = \frac{5}{2} \left(3 e^{-2 t}+1\right)$$
+\newline
+\newline
+\end{itemize}
+Part II
+\indent Let $T=\frac{1}{8}$ sec
+\begin{enumerate}[a)]
+\item Find $A_d$
+\newline
+\newline
+$$A_d = e^{aT} $$
+$$A_d = e^{-2T} = e^{-\frac{1}{4}} \approx 0.7788 $$
+\item Find $B_d$ (using both formulas given in the notes/text)
+\newline
+\newline
+$$B_d = b\int_0^Te^{a\alpha}d\alpha = 5\int_0^\frac{1}{8} e^{-2\alpha}d\alpha = \frac{5}{2}(1-e^{\frac{1}{4}}) \approx 0.553 $$
+$$B_d = A^{-1}[A_d-I]B  = \frac{b(A_d-1)}{a} = \frac{5(e^{-\frac{1}{4}}-1)}{-2} = \frac{5}{2}(1-e^{\frac{1}{4}}) \approx 0.553 $$
+\item Write the discrete time state equations $x[k+1] = f(x[k],u[k])$
+\newline
+\newline
+$$x[k+1] = A_dx[k] + B_du[k]$$
+Since $u[k] = 1 \quad \forall k$
+$$x[k+1] = e^{-\frac{1}{4}}x[k] + \frac{5}{2}(1-e^{\frac{1}{4}}) $$
+\item Look at the Matlab function "c2d" use the "zoh" option - do you get the same results?
+See also CT DT Example Week7 file in WK6 handouts
+\newline
+\newline
+$$ A = 0.7788 \quad B = 0.553 $$
+Which matches what I found.
+\item Using Matlab, Excel or something else recursively compute $x[1]$ through $x[10]$ note that $u[k]=1\quad \forall k$
+\newline
+\newline
+$$
+\begin{matrix}
+1 & 0 \\
+2 & 0.552998 \\
+3 & 0.983673 \\
+4 & 1.31908 \\
+5 & 1.5803 \\
+6 & 1.78374 \\
+7 & 1.94217 \\
+8 & 2.06557 \\
+9 & 2.16166 \\
+10 & 2.2365
+\end{matrix}
+$$
+\end{enumerate}
+
+
+
+\end{document}
