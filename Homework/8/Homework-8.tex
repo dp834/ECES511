@@ -1,0 +1,499 @@
+\documentclass{article}
+
+\usepackage[margin=.75in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{float}
+
+\author{Damien Prieur}
+\title{Homework 8 \\ ECES 511}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+Find the singular values of the matrix
+$A
+=
+\begin{bmatrix}
+1 & 1 & 0 & 1 \\
+0 & 0 & 0 & 1 \\
+1 & 1 & 0 & 0 \\
+\end{bmatrix}
+$
+\newline
+Singular values are the square roots of the eigenvalues of $A^TA$ in decreasing order.
+
+$$A^T
+=
+\begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 0 & 0 \\
+1 & 1 & 0 \\
+\end{bmatrix}
+\implies
+A^TA
+=
+\begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 0 & 0 \\
+1 & 1 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 0 & 1 \\
+0 & 0 & 0 & 1 \\
+1 & 1 & 0 & 0 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 & 2 & 0 & 1 \\
+2 & 2 & 0 & 1 \\
+0 & 0 & 0 & 0 \\
+1 & 1 & 0 & 2 \\
+\end{bmatrix}
+$$
+Now we find the eigenvalues of $A^TA$ expanding along the 3rd column.
+$$
+det(A^TA - \lambda I)
+\implies
+\begin{vmatrix}
+2 -\lambda & 2 & 0 & 1 \\
+2 & 2 -\lambda & 0 & 1 \\
+0 & 0 &  -\lambda & 0 \\
+1 & 1 & 0 & 2 -\lambda \\
+\end{vmatrix}
+=-\lambda
+\begin{vmatrix}
+2 -\lambda & 2 & 1 \\
+2 & 2 -\lambda & 1 \\
+1 & 1 & 2 -\lambda \\
+\end{vmatrix}
+=\lambda ^4-6 \lambda ^3+6 \lambda ^2
+$$
+$$
+\lambda^2 (\lambda ^2 - 6\lambda + 6) = 0
+$$
+$$\lambda_1 = 0 \quad \lambda_2 = 0 \quad \lambda_3 = 3+\sqrt{3} \quad \lambda_4 = 3-\sqrt{3}$$
+To get our singular values we compute $\sigma_i = \sqrt{\lambda_i}$ and order the $\sigma$'s in decreasing order.
+$$\sigma_1 = \sqrt{3 + \sqrt{3}} \qquad \sigma_2 = \sqrt{3 - \sqrt{3}} \quad \sigma_3 = 0 \quad \sigma_4 = 0 $$
+
+\section*{Problem 2}
+Find the SVD of the matrix
+$A
+=
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+$
+\newline
+First we find the $\Sigma$ matrix by finding the singular values as we did in problem 1.
+$$
+A^T
+=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+1 & 0 \\
+0 & 1 \\
+\end{bmatrix}
+\implies
+A^TA
+=
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+1 & 0 \\
+0 & 1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+$$
+Now we find the eigenvalues of $A^TA$ expanding along the 3rd column.
+$$
+det(A^TA - \lambda I)
+\implies
+\begin{vmatrix}
+1-\lambda & 0 & 1 & 0 \\
+0 & 1-\lambda & 0 & 1 \\
+1 & 0 & 1-\lambda & 0 \\
+0 & 1 & 0 & 1-\lambda
+\end{vmatrix}
+= \lambda ^4-4 \lambda ^3+4 \lambda ^2
+$$
+$$
+\lambda^2 (\lambda-2)^2 = 0
+$$
+$$ \lambda_1 = 0 \quad \lambda_2 = 0 \quad \lambda_3 = 2 \quad \lambda_4 = 2 $$
+To get our singular values we compute $\sigma_i = \sqrt{\lambda_i}$ and order the $\sigma$'s in decreasing order.
+$$\sigma_1 = \sqrt{2} \qquad \sigma_2 = \sqrt{2} \quad \sigma_3 = 0 \quad \sigma_4 = 0 $$
+To compute $\Sigma$ we place the entries on the diagonal of a matrix with the same size of $A$
+$$
+\Sigma
+=
+\begin{bmatrix}
+\sqrt{2} & 0 & 0 & 0 \\
+0 & \sqrt{2} & 0 & 0
+\end{bmatrix}
+$$
+\newline
+Next we look to find the $V^T$ matrix which is just any orthonormal basis of the eigenvectors of $A^TA$.
+So first we find the eigenvectors of $A^TA$.
+$$\lambda_1 = 0 \implies
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+x=0
+\implies
+q_1
+=
+\begin{bmatrix}
+-1\\
+0\\
+1\\
+0
+\end{bmatrix}
+$$
+And by inspection we can also find the second eigenvector associated with $\lambda = 0$
+$$
+q_2
+=
+\begin{bmatrix}
+-1\\
+0\\
+1\\
+0
+\end{bmatrix}
+\qquad
+q_2
+=
+\begin{bmatrix}
+0\\
+-1\\
+0\\
+1
+\end{bmatrix}
+$$
+$$\lambda = 2 \implies
+\begin{bmatrix}
+-1 & 0 & 1 & 0 \\
+0 & -1 & 0 & 1 \\
+1 & 0 & -1 & 0 \\
+0 & 1 & 0 & -1
+\end{bmatrix}
+x=0
+\implies
+q_3
+=
+\begin{bmatrix}
+1\\
+0\\
+1\\
+0
+\end{bmatrix}
+$$
+And by inspection we can also find the second eigenvector associated with $\lambda = 2$
+$$
+q_3
+=
+\begin{bmatrix}
+1\\
+0\\
+1\\
+0
+\end{bmatrix}
+\qquad
+q_4
+=
+\begin{bmatrix}
+0\\
+1\\
+0\\
+1
+\end{bmatrix}
+$$
+We can see by inspection that all the eigenvectors are orthogonal to each other.
+Now they can be normalized by dividing by their magnitude.
+$$
+q_1
+=
+\begin{bmatrix}
+-\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}\\
+0
+\end{bmatrix}
+\qquad
+q_2
+=
+\begin{bmatrix}
+0\\
+-\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}
+\end{bmatrix}
+\qquad
+q_3
+=
+\begin{bmatrix}
+\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}\\
+0
+\end{bmatrix}
+\qquad
+q_4
+=
+\begin{bmatrix}
+0\\
+\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}
+\end{bmatrix}
+$$
+Reordering them to match the singular values we get
+$$
+V
+=
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} \\
+\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} \\
+\end{bmatrix}
+$$
+Lastly we find $U$ whos columns can be found by computing $\sigma_i^{-1}Av_i$ where $i$ indicates the column.
+For any extra columns we need just arbitrarily extend the columns to be orthonormal using gram schmidt orthogonalization.
+
+$$u_1 = \sigma_1^{-1}Av_1 =
+\frac{1}{2}
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} \\
+0
+\end{bmatrix}
+$$
+$$u_2 = \sigma_2^{-1}Av_2 =
+\frac{1}{2}
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+\frac{\sqrt{2}}{2}\\
+0\\
+\frac{\sqrt{2}}{2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+\frac{\sqrt{2}}{2}
+\end{bmatrix}
+$$
+Normalizing each column we get
+$$
+U
+=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+$$
+Putting all of this together we can check the solution by checking the following relationship $A = U\Sigma V^T$
+$$
+U
+=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+\qquad
+\Sigma
+=
+\begin{bmatrix}
+\sqrt{2} & 0 & 0 & 0 \\
+0 & \sqrt{2} & 0 & 0
+\end{bmatrix}
+\qquad
+V
+=
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} \\
+\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} \\
+\end{bmatrix}
+$$
+$$
+A =
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\sqrt{2} & 0 & 0 & 0 \\
+0 & \sqrt{2} & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} \\
+-\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} & 0 \\
+0 & -\frac{\sqrt{2}}{2} & 0 & \frac{\sqrt{2}}{2} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1
+\end{bmatrix}
+$$
+
+\section*{Problem 3}
+Given matrix
+$X
+=
+\begin{bmatrix}
+1 & 2 \\
+2 & 1 \\
+3 & 4 \\
+4 & 3 \\
+\end{bmatrix}
+$
+\begin{enumerate}[1)]
+\item Find the eigenvalues and eigenvectors $\varphi_1$ and $\varphi_2$ of the matrix.
+\newline
+Singular values are the square roots of the eigenvalues of $A^TA$ in decreasing order.
+
+$$A^T
+=
+\begin{bmatrix}
+1 & 2 & 3 & 4 \\
+2 & 1 & 4 & 3 \\
+\end{bmatrix}
+\implies
+A^TA
+=
+\begin{bmatrix}
+1 & 2 & 3 & 4 \\
+2 & 1 & 4 & 3 \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 \\
+2 & 1 \\
+3 & 4 \\
+4 & 3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+30 & 28 \\
+28 & 30 \\
+\end{bmatrix}
+$$
+Now we find the eigenvalues of $A^TA$ expanding along the 3rd column.
+$$
+det(A^TA - \lambda I)
+\implies
+\begin{vmatrix}
+30 -\lambda & 28 \\
+28 & 30 - \lambda \\
+\end{vmatrix}
+=(30-\lambda)(30-\lambda) - 28^2
+=\lambda^2 -60\lambda + 116
+$$
+$$
+(\lambda-58)(\lambda-2) = 0
+$$
+$$ \lambda_1 = 58 \quad \lambda_2 = 2 $$
+Finding the eigenvectors associated with $\lambda_1$ and $\lambda_2$
+$$\lambda_1 = 58 \implies
+\begin{bmatrix}
+-28 & 28 \\
+28 & - 28 \\
+\end{bmatrix}
+x=0
+\implies
+q_1
+=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$$
+$$\lambda_1 = 2 \implies
+\begin{bmatrix}
+28 & 28 \\
+28 & 28 \\
+\end{bmatrix}
+x=0
+\implies
+q_2
+=
+\begin{bmatrix}
+-1\\
+1
+\end{bmatrix}
+$$
+$$
+\lambda_1 = 58 \quad \lambda_2 = 28 \quad \varphi_1 = \begin{bmatrix} 1\\ 1 \end{bmatrix} \quad \varphi_2 = \begin{bmatrix}-1 \\ 1 \end{bmatrix}
+$$
+
+
+\item Calculate $Z = X[\varphi_1, \varphi_2]$, what is the relationship between vectors in $Z$ and vectors in $X$?
+$$
+Z
+=
+\begin{bmatrix}
+1 & 2 \\
+2 & 1 \\
+3 & 4 \\
+4 & 3 \\
+\end{bmatrix}
+\begin{bmatrix}
+1 & -1 \\
+1 & 1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+3 & 1 \\
+3 & -1 \\
+7 & 1 \\
+7 & -1
+\end{bmatrix}
+$$
+\newline
+The matrix $[\varphi_1 \varphi_2]$ equals a rotation matrix of $90^\circ$.
+If the matrix was normalized then the vectors in $Z$ would represent the vectors but rotated 90 degrees.
+Since it isn't normalized they are also scaled by a factor of $\sqrt{2}$
+\end{enumerate}
+
+
+\end{document}
