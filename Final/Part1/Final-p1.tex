@@ -306,11 +306,99 @@ Note this transfer function has no zero/pole cancellation and is a minimal polyn
 \begin{enumerate}[1)]
 \item Convert from Transfer function to Differential equation then to the State equations.
 \newline
+Separating the transfer function we get
+$$ Y(s)(s^2+5s+6) = 6R(s) $$
+Taking the inverse Laplace transform on each side we get
+$$\ddot{y} + 5 \dot{y} + 6y = 6r $$
+Let $x_1 = y \quad x_2 = \dot{y}$
+Now converting the Differential equation to state space form we get.
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_2 \\
+6 r -5x_2 -6x_1
+\end{bmatrix}
+\qquad
+y = x_1
+$$
+In Matrix form we get
+$$
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 \\
+-6 & -5 
+\end{bmatrix}
+x +
+\begin{bmatrix}
+0 \\
+6
+\end{bmatrix}
+r(t)
+$$
+$$
+y = \begin{bmatrix} 1 & 0 \end{bmatrix} x
+$$
 \item Confirm by converting directly from the Transfer function to the State equation.
 {\color{blue} Use MATLAB to confirm.}
 \newline
+Writing the Transfer Function in matrix form with $Q_1(s) = Y(S) \quad Q_2(s) = sY(S)$
+$$
+s
+\begin{bmatrix}
+Q_1(s) \\
+Q_2(s)
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 \\
+-6 & -5
+\end{bmatrix}
+Q(s)
++
+\begin{bmatrix}
+0 \\
+6
+\end{bmatrix}
+R(s)
+$$
+$$ Y(s) = \begin{bmatrix} 1 & 0 \end{bmatrix} Q(s) $$
+Now if we take the inverse laplace transform of this system we get
+$$
+\begin{bmatrix}
+\dot{y} \\
+\ddot{y}
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 1 \\
+-6 & -5
+\end{bmatrix}
+y
++
+\begin{bmatrix}
+0 \\
+6
+\end{bmatrix}
+r(t)
+$$
+$$ y = \begin{bmatrix} 1 & 0 \end{bmatrix} y(t) $$
+If we use the same substitution as in part 1 we get the same system of equations out.
 \item Calculate the impulse response of the system.
 \newline
+Since we have the transfer function $H(s)$ if we take it's inverse Laplace transform we get the impulse response $h(t)$
+$$H(s) = \frac{6}{s^2 + 5s + 6}$$
+Breaking this up into two fractions we get
+$$ H(s) = 6(\frac{1}{2+s} - \frac{1}{3+s}) $$
+Taking the inverse Laplace transform gives us
+$$ h(t) = 6(e^{-2 t} - e^{-3 t}) $$
 \end{enumerate}
 
 \newpage
@@ -318,6 +406,67 @@ Note this transfer function has no zero/pole cancellation and is a minimal polyn
 Use the Cayley Hamilton Theorem to find $A^{-1}$ where $A = \begin{bmatrix} 0 & 1 \\ -2 & 3 \end{bmatrix}$.
 Validate your answer with $AA^{-1}$.
 \newline
+Let $f(\lambda)=\lambda^{-1}$
+Finding the eigenvalues of $A$
+$$det(A - \lambda I) =
+\begin{vmatrix}
+-\lambda & 1 \\
+-2 & 3 - \lambda
+\end{vmatrix}
+=
+\lambda^2 - 3\lambda + 2
+=
+(\lambda - 1)(\lambda - 2)
+$$
+$$ \lambda_1 = 1 \qquad \lambda_2 = 2 $$
+Let $h(\lambda) = \beta_0 + \beta_1 \lambda$
+Since each eigenvalue have multiplicity 1 we get one equation from each.
+$$ h(\lambda_1) = f(\lambda_1) \implies \beta_0 + \beta_1(1) = (1)^{-1} = 1 $$
+$$ h(\lambda_2) = f(\lambda_2) \implies \beta_0 + \beta_1(2) = (2)^{-1} = \frac{1}{2} $$
+Solving for $\beta_0$ with the first equation and substituting into the second equation we get a solution.
+$$\beta_0 = 1 - \beta_1$$  
+$$ 1 -\beta_1 + 2\beta_1 = \frac{1}{2} \implies \beta_1 = -\frac{1}{2}$$
+$$\implies \beta_0 = \frac{3}{2} $$
+Plugging in the values for $\beta$ we get
+$$ h(\lambda) = \frac{3}{2} - \frac{1}{2} \lambda $$
+And finally finding $ f(A) = h(A) = A^{-1} $
+$$ A^{-1} =
+\frac{1}{2}
+(
+\begin{bmatrix}
+3 & 0 \\
+0 & 3
+\end{bmatrix}
+-
+\begin{bmatrix}
+0 & 1 \\
+-2 & 3
+\end{bmatrix}
+)
+=
+\frac{1}{2}
+\begin{bmatrix}
+3 & -1 \\
+2 & 0
+\end{bmatrix}
+$$
+Confirming the solution by verifying $AA^{-1} = I$
+$$
+\frac{1}{2}
+\begin{bmatrix}
+0 & 1 \\
+-2 & 3
+\end{bmatrix}
+\begin{bmatrix}
+3 & -1 \\
+2 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+$$
 
 \newpage
 \section*{Problem 6}
@@ -328,12 +477,78 @@ y(t) &= \begin{bmatrix} 1 & 3 \end{bmatrix} x(t) \\
 x(0) &= \begin{bmatrix} 4 \\ 5 \end{bmatrix} \\
 \end{align*}
 \begin{enumerate}[a)]
-\item Find the state trasition matrix $\varphi (t) = e^{At}$.
+\item Find the state transition matrix $\varphi (t) = e^{At}$.
 {\color{blue} Use MATLAB to confirm}
 \newline
-
+Since our original matrix is already in it's Jordan diagonal form computing $e^{At}$ is trivial by taking each diagonal term to $e^{at}$
+$$\varphi (t) = e^{At} =
+\begin{bmatrix}
+e^{-2t} & 0 \\
+0 & e^{-4t}
+\end{bmatrix}
+$$
 \item Find the transfer function $\frac{Y(s)}{R(s)}$ (factor all polynomials).
 \newline
+The transfer function can be found with this relationship $\frac{Y(s)}{R(s)} = C\Phi(s)B  + D $ where  $\Phi(s) = (sI - A)^{-1}$
+$$\Phi (s) =
+(\begin{bmatrix}
+s & 0 \\
+0 & s
+\end{bmatrix}
+-
+\begin{bmatrix}
+-2 & 0 \\
+0 & -4
+\end{bmatrix}
+)^{-1}
+=
+(
+\begin{bmatrix}
+s+2 & 0 \\
+0 & s+4
+\end{bmatrix}
+)^{-1}
+=
+\frac{1}{(s+4)(s+2)}
+\begin{bmatrix}
+s+4 & 0 \\
+0 & s+2
+\end{bmatrix}
+$$
+Now computing the transfer function we get
+$$
+\frac{Y(s)}{R(s)}
+=
+\frac{1}{(s+4)(s+2)}
+\begin{bmatrix}
+1 & 3
+\end{bmatrix}
+\begin{bmatrix}
+s+4 & 0 \\
+0 & s+2
+\end{bmatrix}
+\begin{bmatrix}
+4 \\
+-1
+\end{bmatrix}
+=
+\frac{1}{(s+4)(s+2)}
+\begin{bmatrix}
+1 & 3
+\end{bmatrix}
+\begin{bmatrix}
+4s+16\\
+-s-2
+\end{bmatrix}
+$$
+$$
+\frac{Y(s)}{R(s)}
+=
+\frac{4s+16 -3s -6}{(s+4)(s+2)}
+=
+\frac{s+10}{(s+4)(s+2)}
+$$
+
 \item Find the total solution for the state vector $x(t)$ if the input $r(t) = 2 u(t)$ where $u(t) = unit step function$.
 {\color{blue} Use MATLAB to confirm}
 \newline
@@ -345,5 +560,350 @@ x(0) &= \begin{bmatrix} 4 \\ 5 \end{bmatrix} \\
 \newline
 Show the results in both the time domain and Laplace domain.
 \textbf{Hint:} It is easier to solve if you work in the Laplace domain then convert to the time domain.
+\newline
+The close form solution is given by $Y(s) = C \Phi(s)(X(0) + BR(s))$
+$$R(s) = \mathcal{L}\{2u(t)\} = \frac{2}{s} \qquad \Phi(s) =
+\frac{1}{(s+4)(s+2)}
+\begin{bmatrix}
+s+4 & 0 \\
+0 & s+2
+\end{bmatrix}
+$$
+$$Y(s) = C\Phi(s)X(0) +C\Phi(s)BR(s)$$
+The first term is the zero input term and the second term is the zero state term.
+Computing each individually we have
+$$Y_{zi}(s)  = C\Phi(s)X(0) = \frac{4}{s+2} + \frac{15}{s+4} $$
+$$Y_{zs}(s)  = C\Phi(s)BR(s) = \frac{2}{s}(\frac{4}{s+2} - \frac{3}{s+4})  =  \frac{5}{2 s}-\frac{4}{s+2}+\frac{3}{2 (s+4)}$$
+To find $y(t)$ we take the inverse Laplace transform of $Y(s)$.
+$$
+y_{zi}(t)
+=
+\mathcal{L}^{-1}\{Y_{zi}(s)\}
+=
+\mathcal{L}^{-1}\{\frac{4}{s+2} + \frac{15}{s+4}\}
+=
+15 e^{-4t} + 4 e^{-2t}
+$$
+$$
+y_{zi}(t)
+=
+15 e^{-4t} + 4 e^{-2t}
+$$
+$$
+y_{zs}(t)
+=
+\mathcal{L}^{-1}\{Y_{zs}(s)\}
+=
+\mathcal{L}^{-1}\{\frac{5}{4s} - \frac{4}{2+s} + \frac{3}{2(s+4)}\}
+=
+\frac{5}{2} + \frac{3}{2}e^{-4t} - 4 e^{-2t}
+$$
+$$
+y_{zs}(t)
+=
+\frac{5}{2} + \frac{3}{2}e^{-4t} - 4 e^{-2t}
+$$
+Combining the zero state and zero input solutions we get the solution to be
+$$ y(t) = \frac{5}{2} + \frac{33}{2}e^{-4t} $$
+If we compare the results of lsim to our solution we see they match 
+\begin{figure}[h!]
+\includegraphics[scale=.75]{{images/p6_lsim}.png}
+\end{figure}
 \end{enumerate}
+
+\newpage
+\section*{Problem 7}
+Use the same system in Problem 6
+\begin{enumerate}[a)]
+\item Use MATLAB to plot the state variables in continuous time over the time range $t \in [0,10]$
+\newline
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=.3]{{images/p7_lsim}.png}
+\end{figure}
+\item Calculate the $A_d, B_d, C_d, D_d$ for discrete system if sampled at $T = \frac{1}{2}$s.
+\newline
+From problem 6 part a we already have $e^{At}$ so
+$$A_d = e^{AT} = \varphi(\frac{1}{2}) =
+\begin{bmatrix}
+e^{-1} & 0 \\
+0 & e^{-2}
+\end{bmatrix}
+$$
+$$
+B_d = (\int_0^T e^{A\alpha}d\alpha)B =
+\begin{bmatrix}
+\frac{-1}{2}e^{-1} + \frac{1}{2} & 0 \\
+0 & \frac{-1}{4}e^{-2} + \frac{1}{4} 
+\end{bmatrix}
+\begin{bmatrix}
+4 \\
+-1
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2e^{-1} + 2 \\
+\frac{1}{4}e^{-2} - \frac{1}{4}
+\end{bmatrix}
+$$
+$$ C_d = C = \begin{bmatrix} 1 & 3 \end{bmatrix} $$
+$$ D_d = D = 0 $$
+\item Use MATLAB to plot the discrete response of the same state variable as (a) and compare the two plots.
+\newline
+We can see that at each evaluation of the discrete model it's extremely close to the continuous model and exactly the same for $x_1$.
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=.5]{{images/p8_lsim}.png}
+\end{figure}
+
+\end{enumerate}
+
+\newpage
+\section*{Problem 8}
+Compute the singular value decomposition of $A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}$.
+{\color{blue} Use MATLAB to confirm.}
+\newline
+First we compute $A^TA$
+$$A^TA =
+\begin{bmatrix}
+2 & 0 & 0 & 0 \\
+0 & 2 & 1 & 0 \\
+0 & 1 & 2 & 0 \\
+\end{bmatrix}
+\begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+4 & 0 & 0 \\
+0 & 5 & 4 \\
+0 & 4 & 5
+\end{bmatrix}
+$$
+Next we find the eigenvalues for $A^TA$
+$$det(A^TA - \lambda I)
+=
+\begin{vmatrix}
+4-\lambda & 0 & 0 \\
+0 & 5-\lambda & 4 \\
+0 & 4 & 5-\lambda
+\end{vmatrix}
+=
+(4-\lambda)((5-\lambda)^2-16)
+=-\lambda ^3+14 \lambda ^2-49 \lambda +36
+=-(\lambda -9) (\lambda -4) (\lambda -1)
+$$
+$$ \lambda_1 = 9 \qquad \lambda_2 = 4 \qquad \lambda_3 = 1 $$
+We get the singular values by taking the square root of the eigenvalues
+$$ \sigma_1 = 3 \qquad \sigma_2 = 2 \qquad \sigma_3 = 1 $$
+$$
+\Sigma =
+\begin{bmatrix}
+3 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 1 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+Getting $V$ we find the eigenvectors of $A^TA$
+$$
+\lambda_1 = 9 \implies
+\begin{bmatrix}
+-5 & 0 & 0 \\
+0 & -4 & 4 \\
+0 & 4 & -4
+\end{bmatrix}
+x
+=0
+\implies q_1 =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 \\
+1 \\
+1
+\end{bmatrix}
+$$
+$$
+\lambda_2 = 4 \implies
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 1 & 4 \\
+0 & 4 & 1
+\end{bmatrix}
+x
+=0
+\implies q_2 =
+\begin{bmatrix}
+1 \\
+0 \\
+0
+\end{bmatrix}
+$$
+$$
+\lambda_3 = 1 \implies
+\begin{bmatrix}
+3 & 0 & 0 \\
+0 & 4 & 4 \\
+0 & 4 & 4
+\end{bmatrix}
+x
+=0
+\implies q_3 =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 \\
+1 \\
+-1
+\end{bmatrix}
+$$
+Combining these terms so the matrix is also unit magnitude we get
+$$
+V =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & \sqrt{2} & 0 \\
+1 & 0 & 1 \\
+1 & 0 & -1
+\end{bmatrix}
+$$
+Finding each column of $U$ with the relationship $u_i = \sigma_i^{-1}Av_i$
+$$u_1 =
+\frac{1}{3}
+\begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+0 \\
+1 \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+1 \\
+1 \\
+0
+\end{bmatrix}
+$$
+$$u_2 =
+\frac{1}{2}
+\begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+1 \\
+0 \\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\
+0 \\
+0 \\
+0
+\end{bmatrix}
+$$
+$$u_3 =
+\begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+0 \\
+1 \\
+-1
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+1 \\
+-1 \\
+0
+\end{bmatrix}
+$$
+The last column $u_4$ needs to be linearly independent from the other columns so taking the easiest solution we find
+$$u_4 =
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+1 \\
+\end{bmatrix}
+$$
+Combining the columns and making them all unit magnitude we get
+$$ U =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & \sqrt{2} & 0 & 0 \\
+1 & 0 & 1 & 0 \\
+1 & 0 & -1 & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+$$
+So we have but the columns are correct up to the sign so we just need to test to determine the sign for each column to recreate $A$
+$$
+A = U\Sigma V^T =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & \sqrt{2} & 0 & 0\\
+-1 & 0 & -1 & 0\\
+-1 & 0 & 1 & 0\\
+0 & 0 & 0 & \sqrt{2}\\
+\end{bmatrix}
+\begin{bmatrix}
+3 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 1 \\
+0 & 0 & 0
+\end{bmatrix}
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & -1 & -1 \\
+\sqrt{2} & 0 & 0 \\
+0 & -1 & 1
+\end{bmatrix}
+$$
+Evaluating this we can confirm that this equals $A$
+$$
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & \sqrt{2} & 0 & 0\\
+-1 & 0 & -1 & 0\\
+-1 & 0 & 1 & 0\\
+0 & 0 & 0 & \sqrt{2}\\
+\end{bmatrix}
+\begin{bmatrix}
+3 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 1 \\
+0 & 0 & 0
+\end{bmatrix}
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+0 & -1 & -1 \\
+\sqrt{2} & 0 & 0 \\
+0 & -1 & 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 & 0 & 0 \\
+0 & 2 & 1 \\
+0 & 1 & 2 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+
+
+
 \end{document}
