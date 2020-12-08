@@ -1,9 +1,11 @@
+global R1 C1 L1 L2
 R1 = 1; %Ohm
 C1 = 1; %Farad
 L1 = 1; %Henry
 L2 = 1; %Henry
 
 %% Part a
+
 % Write the state space model dx = f(x,V) using Kirchoff equations.
 % Choose the inductors currents and the capacitor's voltage as state variables
 % x1 = i_L1
@@ -44,6 +46,7 @@ L2 = 1; %Henry
 % dx3/dt = (1/C)  * (x1 + x2)
 
 %% Part b
+
 % dx1/dt = (1/L1) * (V -x3 - R(x1) + R(x1)^3)
 % dx2/dt = (1/L2) * (V - x3)
 % dx3/dt = (1/C)  * (x1 + x2)
@@ -65,6 +68,7 @@ L2 = 1; %Henry
 % So for each  voltage value we have 2 equilibrium points
 
 %% Part c
+
 % We expect that the system will be stable when the capacitor's voltage is equal to the battery and there is no more current flow
 % If there is current flow it will cause the capacitor's voltage to change relative to the battery causing the system to change
 % we can confirm this by looking at the linearized systems and their eigenvalues
@@ -104,6 +108,7 @@ eig(A_1)
 % At least one real part of the system has a positive eigenvalue so this is not a stable equilibirum
 
 %% Part d & e
+
 % Simulate and compare the linearized and the nonlinear system using MATLAB
 
 constant_voltage = 1;
@@ -124,7 +129,7 @@ plot(ts, x_ode(:,1));
 hold on;
 plot(t, x_stable(:,1));
 plot(t, x_unstable(:,1));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Inductor 1 (A)");
@@ -136,7 +141,7 @@ plot(ts, x_ode(:,2));
 hold on;
 plot(t, x_stable(:,2));
 plot(t, x_unstable(:,2));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Inductor 2 (A)");
@@ -149,7 +154,7 @@ plot(ts, x_ode(:,3));
 hold on;
 plot(t, x_stable(:,3));
 plot(t, x_unstable(:,3));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Capacitor (V)");
@@ -157,7 +162,7 @@ hold off;
 
 sgtitle("Comparing nonlinear model to linear models with 1 (V) and initially at rest");
 saveas(gcf, "images/ode_vs_linear_models_1V_rest.png");
-
+snapnow
 % Testing close to the unstable equilibirum point
 constant_voltage = 1;
 %tmax = 15;
@@ -177,7 +182,7 @@ plot(ts, x_ode(:,1));
 hold on;
 plot(t, x_stable(:,1));
 plot(t, x_unstable(:,1));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Inductor 1 (A)");
@@ -189,7 +194,7 @@ plot(ts, x_ode(:,2));
 hold on;
 plot(t, x_stable(:,2));
 plot(t, x_unstable(:,2));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Inductor 2 (A)");
@@ -202,7 +207,7 @@ plot(ts, x_ode(:,3));
 hold on;
 plot(t, x_stable(:,3));
 plot(t, x_unstable(:,3));
-ylim([-1 2]);
+ylim([-1 3]);
 legend(legend_strings);
 xlabel("Time (s)");
 ylabel("Capacitor (V)");
@@ -210,11 +215,12 @@ hold off;
 
 sgtitle("Comparing nonlinear model to linear models with 1 (V) and close to unstable solution");
 saveas(gcf, "images/ode_vs_linear_models_1V_near_unstable.png");
-
+snapnow;
 % As we can see the unstable linearization is always inaccurate
 % A small deviation from the nonstable equilibrium causes the system to converge to the stable equilibirum.
 
 %% Part f
+
 % We expect a circuit like this to be stable when there is no voltage difference across any component so when the voltage across the capacitor is equal to the voltage across the battery.
 % For the inductors we expect the current across them to be zero.
 % If the capacitor was at equilibrium but the inductor wasn't at equilibrium then the capacitor would charge past the battery's voltage.
@@ -260,7 +266,7 @@ end
 
 function [A, B, C, D] = linearize(equilibirum)
     global R1 C1 L1 L2
-    A = [ R1*(-1 + 3*equilibirum(1)^2)/L1  0  -1/L1;
+    A = [ (R1/L1)*(-1 + 3*equilibirum(1)^2)  0  -1/L1;
                0                           0  -1/L2;
               1/C1                        1/C1   0 ];
     B = [1;
